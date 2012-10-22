@@ -16,16 +16,16 @@ module.exports = function(grunt) {
     var hogan = require('hogan.js'),
         path = require('path'),
         target = this.target,
-        data = this.data,
         render = this.data.render,
         compile = this.data.compile,
-        result ="";
+        output = null;
         
         if (render) {
             if (!render.output) {
                 grunt.log.error("expected \"render.output\" directive");
                 return false;
             }
+            output = render.output;
             grunt.file.write(render.output,     
              hoganRender(render.template, render.context, render.options));
         }
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                 grunt.log.error("expected \"compile.output\" directive");
                 return false;
             }
-            
+            output = compile.output;
             grunt.file.write(compile.output, 
                 hoganCompile(templates, compile.options));
             return true;
@@ -49,24 +49,36 @@ module.exports = function(grunt) {
             return false;
         }
         
+    
         function hoganCompile(templatePatterns, options) {
             options = options || {};
-            options.binder = options.binder || require("hogan-binder-vanilla.js");
+            options.binderName = options.binderName || "default";
+            options.exportName = options.exportName || target;
+            
+            if (!options.batchRender) {
+                if (path.existsSync("./binders.js")) {
+                    options.batchRender = require("./binders.js").render;
+                }
+                else {
+                    options.batchRender = require("./binder-bootstrap.js").render;
+                }
+            }
+            
             options.nameFunc = options.nameFunc || function(fileName) {
-                path.basename(fileName, path.extname(fileName));
+                return path.basename(fileName, path.extname(fileName));
             };
             var templateFilePaths = grunt.file.expand(templatePatterns);
             var templates = [];
             
             templateFilePaths.forEach(function(templateFilePath) {
                 try {
-                    template.push({
-                        name: name,
+                    templates.push({
+                        name: options.nameFunc(templateFilePath) || "NameFuncFailed",
                         template: hogan.compile(
                             grunt.file.read(templateFilePath).toString(), 
                             {asString:true})});                
                 } 
-                catch (var error) {
+                catch (error) {
                     grunt.log.error(error);
                     grunt.log.error("Error compiling template " + name + " in " + templateFilePath);
                     throw error;
@@ -76,10 +88,13 @@ module.exports = function(grunt) {
                 config: function() { //lambda that retrieves config parameters
                     return function(text) {
                         return grunt.config(text);
-                    }}, 
+                    }},
+                output: output,
+                exportName: options.exportName,
+                outputFileName: path.basename(output, path.extname(output)),
                 templates: templates}
             
-            return options.binder.render(context);    
+            return options.batchRender(context, options.binderName);    
         }
         
         function hoganRender(template, context, options) {

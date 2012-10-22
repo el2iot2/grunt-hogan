@@ -1,7 +1,15 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
+   // Project configuration.
   grunt.initConfig({
+    hogan: {
+        binders : {
+            compile : {
+                templates : "view/binder/*.hogan",
+                output : "tasks/binders.js"
+            }
+        }
+    },
     test: {
       files: ['test/**/*.js']
     },
@@ -34,7 +42,8 @@ module.exports = function(grunt) {
   // Load local tasks.
   grunt.loadTasks('tasks');
 
+
   // Default task.
-  grunt.registerTask('default', 'lint test');
+  grunt.registerTask('default', 'hogan');
 
 };

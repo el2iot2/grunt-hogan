@@ -1,0 +1,23 @@
+(function (exports) {
+    var Hogan = require("hogan");
+    var templates = {};
+
+    templates["hulk"] = new Hogan.Template(function(c,p,i){var _=this;_.b(i=i||&quot;&quot;);_.b(&quot;var templates = {};\r&quot;);_.b(&quot;\n&quot; + i);if(_.s(_.f(&quot;templates&quot;,c,p,1),c,p,0,35,96,&quot;{{ }}&quot;)){_.rs(c,p,function(c,p,_){_.b(&quot;templates[\&quot;&quot;);_.b(_.v(_.f(&quot;name&quot;,c,p,0)));_.b(&quot;\&quot;] = new Hogan.Template(&quot;);_.b(_.v(_.f(&quot;template&quot;,c,p,0)));_.b(&quot;);\r&quot;);_.b(&quot;\n&quot;);});c.pop();}return _.fl();;});
+    templates["nodejs"] = new Hogan.Template(function(c,p,i){var _=this;_.b(i=i||&quot;&quot;);_.b(&quot;(function (exports) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    var Hogan = require(\&quot;hogan\&quot;);\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    var templates = {};\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;\r&quot;);_.b(&quot;\n&quot; + i);if(_.s(_.f(&quot;templates&quot;,c,p,1),c,p,0,103,172,&quot;{{ }}&quot;)){_.rs(c,p,function(c,p,_){_.b(&quot;    templates[\&quot;&quot;);_.b(_.v(_.f(&quot;name&quot;,c,p,0)));_.b(&quot;\&quot;] = new Hogan.Template(&quot;);_.b(_.v(_.f(&quot;template&quot;,c,p,0)));_.b(&quot;);\r&quot;);_.b(&quot;\n&quot;);});c.pop();}_.b(&quot;\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    function render(context, templateName) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        if (templateName) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;            return templates[templateName].render(context);\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        else {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;            return templates[0].render(context);\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    \r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    exports.render = render;\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;}(exports));&quot;);return _.fl();;});
+    templates["default"] = new Hogan.Template(function(c,p,i){var _=this;_.b(i=i||&quot;&quot;);_.b(&quot;(function (exports) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    var Hogan = require(\&quot;hogan\&quot;);\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    var templates = {};\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;\r&quot;);_.b(&quot;\n&quot; + i);if(_.s(_.f(&quot;templates&quot;,c,p,1),c,p,0,103,172,&quot;{{ }}&quot;)){_.rs(c,p,function(c,p,_){_.b(&quot;    templates[\&quot;&quot;);_.b(_.v(_.f(&quot;name&quot;,c,p,0)));_.b(&quot;\&quot;] = new Hogan.Template(&quot;);_.b(_.v(_.f(&quot;template&quot;,c,p,0)));_.b(&quot;);\r&quot;);_.b(&quot;\n&quot;);});c.pop();}_.b(&quot;\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    function render(context, templateName) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        if (templateName) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;            return templates[templateName].render(context);\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        else {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;            for (name in templates) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;                if (templates.hasOwnProperty(name) &amp;&amp; typeof(name) !== &#39;function&#39;) {\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;                    return templates[name].render(context);\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;                }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;            }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;            throw \&quot;could not resolve default template\&quot;;\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;        }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    }\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;    exports.render = render;\r&quot;);_.b(&quot;\n&quot; + i);_.b(&quot;}(typeof exports === &#39;undefined&#39; ? (this.&quot;);_.b(_.v(_.f(&quot;exportName&quot;,c,p,0)));_.b(&quot; = {}) : exports));&quot;);return _.fl();;});
+
+    function render(context, templateName) {
+        if (templateName) {
+            return templates[templateName].render(context);
+        }
+        else {
+            for (name in templates) {
+                if (templates.hasOwnProperty(name) && typeof(name) !== 'function') {
+                    return templates[name].render(context);
+                }
+            }
+            throw "could not resolve default template";
+        }
+    }
+    exports.render = render;
+}(typeof exports === 'undefined' ? (this.binders = {}) : exports));

@@ -1,0 +1,23 @@
+(function (exports) {
+    var Hogan = require("hogan");
+    var templates = {};
+
+    {{#templates}}
+    templates["{{name}}"] = new Hogan.Template({{template}});
+    {{/templates}}        
+
+    function render(context, templateName) {
+        if (templateName) {
+            return templates[templateName].render(context);
+        }
+        else {
+            for (name in templates) {
+                if (templates.hasOwnProperty(name) && typeof(name) !== 'function') {
+                    return templates[name].render(context);
+                }
+            }
+            throw "could not resolve default template";
+        }
+    }
+    exports.render = render;
+}(typeof exports === 'undefined' ? (this.{{exportName}} = {}) : exports));

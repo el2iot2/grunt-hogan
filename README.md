@@ -1,6 +1,6 @@
 # grunt-hogan
 
-a grunt task to compile/precompile hogan templates
+a grunt task to compile/render hogan templates
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan`

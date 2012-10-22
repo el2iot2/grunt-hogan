@@ -1,0 +1,19 @@
+(function (exports) {
+    var Hogan = require("hogan");
+    var templates = {};
+
+    {{#templates}}
+    templates["{{name}}"] = new Hogan.Template({{template}});
+    {{/templates}}        
+
+    function render(context, templateName) {
+        if (templateName) {
+            return templates[templateName].render(context);
+        }
+        else {
+            return templates[0].render(context);
+        }
+    }
+    
+    exports.render = render;
+}(exports));
