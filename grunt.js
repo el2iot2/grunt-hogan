@@ -3,10 +3,31 @@ module.exports = function(grunt) {
    // Project configuration.
   grunt.initConfig({
     hogan: {
-        binders : {
+        nodejs : {
             compile : {
-                templates : "view/binder/*.hogan",
-                output : "tasks/binders.js"
+                templates : "view/binder/nodejs.hogan",
+                output : "tasks/binder/nodejs.js",
+                options : {
+                    binderName: "bootstrap",
+                }
+            }
+        },
+        "default" : {
+            compile : {
+                templates : "view/binder/default.hogan",
+                output : "tasks/binder/default.js",
+                options : {
+                    binderName: "bootstrap",
+                }
+            }
+        },
+        hulk : {
+            compile : {
+                templates : "view/binder/hulk.hogan",
+                output : "tasks/binder/hulk.js",
+                options : {
+                    binderName: "bootstrap",
+                }
             }
         }
     },

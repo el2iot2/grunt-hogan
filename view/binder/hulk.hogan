@@ -1,4 +1,4 @@
 var templates = {};
 {{#templates}}
-templates["{{name}}"] = new Hogan.Template({{template}});
+templates["{{name}}"] = new Hogan.Template({{{template}}});
 {{/templates}}

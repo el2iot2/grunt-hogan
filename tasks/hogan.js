@@ -54,16 +54,9 @@ module.exports = function(grunt) {
             options = options || {};
             options.binderName = options.binderName || "default";
             options.exportName = options.exportName || target;
+            var binderPath = "./binder/"+options.binderName+".js";
             
-            if (!options.batchRender) {
-                if (path.existsSync("./binders.js")) {
-                    options.batchRender = require("./binders.js").render;
-                }
-                else {
-                    options.batchRender = require("./binder-bootstrap.js").render;
-                }
-            }
-            
+            options.batchRender = options.batchRender || require(binderPath).render;
             options.nameFunc = options.nameFunc || function(fileName) {
                 return path.basename(fileName, path.extname(fileName));
             };
@@ -92,7 +85,7 @@ module.exports = function(grunt) {
                 output: output,
                 exportName: options.exportName,
                 outputFileName: path.basename(output, path.extname(output)),
-                templates: templates}
+                templates: templates};
             
             return options.batchRender(context, options.binderName);    
         }

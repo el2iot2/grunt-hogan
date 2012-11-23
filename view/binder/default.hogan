@@ -1,9 +1,23 @@
+/*USAGE (Node.js):*/
+/*var templates = require("./somewhere/{{outputFileName}}.js");*/
+/*var soleTemplateOutput = templates.render({context: "example"});*/
+/*var specificTemplateOutputs = templates.render({}, "specific");*/
+/**/
+/*USAGE (In Browser)*/
+/*<script type="text/javascript" src="./somewhere/{{outputFileName}}.js"></script>*/
+/*<script type="text/javascript">
+/*var soleTemplateOutput = {{exportName}}.render({context: "example"});*/
+/*var specificTemplateOutputs = {{exportName}}.render({}, "specific");*/
+/*someDiv.innerHTML = soleTemplateOutput || specificTemplateOutput;*/
+/*</script>*/
+
+
 (function (exports) {
-    var Hogan = require("hogan");
+    var Hogan = require("hogan.js");
     var templates = {};
 
     {{#templates}}
-    templates["{{name}}"] = new Hogan.Template({{template}});
+    templates["{{name}}"] = new Hogan.Template({{{template}}});
     {{/templates}}        
 
     function render(context, templateName) {
