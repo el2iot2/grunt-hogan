@@ -29,9 +29,11 @@
   "scripts": {
     "test": "grunt test"
   },
+  "dependencies": {
+    "hogan.js": "~2.0.0"
+  },
   "devDependencies": {
     "grunt": "~0.3.17",
-    "hogan.js": "~2.0.0",
     "jasmine-node": ""
   },
   "keywords": [
