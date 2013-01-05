@@ -4,14 +4,12 @@ a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.
 
 ## Status
 
-Alpha, unpublished to npm. TODO:
+Alpha, published to npm. TODO:
 
- * ~~generate default binder template~~
- * fill in tests
- * ~~investigate desired binder template styles (APM, requireJS, vanilla, browser?)~~
+ * publish client-side version to bower
 
 ## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan`
+Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan --save-dev`
 
 Then add this line to your project's `grunt.js` gruntfile:
 
