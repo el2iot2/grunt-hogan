@@ -18,7 +18,7 @@
 
     {{#templates}}
     templates["{{name}}"] = new Hogan.Template({{{template}}});
-    {{/templates}}        
+    {{/templates}}
 
     function render(context, templateName) {
         if (templateName) {

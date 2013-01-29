@@ -29,6 +29,15 @@ module.exports = function(grunt) {
                     binderName: "bootstrap",
                 }
             }
+        },
+        revealing : {
+            compile : {
+                templates : "view/binder/revealing.hogan",
+                output : "tasks/binder/revealing.js",
+                options : {
+                    binderName: "bootstrap",
+                }
+            }
         }
     },
     test: {

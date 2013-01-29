@@ -1,0 +1,17 @@
+var {{exportName}} = function(){
+
+{{#templates}}
+    var _{{name}} = new Hogan.Template({{{template}}});
+{{/templates}}
+
+   return {
+{{#templates}}
+        {{name}}: function render_{{name}}(context) {
+            return _{{name}}.render(context);
+        },
+{{/templates}}
+        termination: null;
+}();
+
+
+

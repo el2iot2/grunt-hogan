@@ -5,7 +5,7 @@ exports.templates = templates;
 
 {{#templates}}
 templates["{{name}}"] = new Hogan.Template({{{template}}});
-{{/templates}}        
+{{/templates}}
 
 exports.render = function(context, templateName) {
     if (templateName) {
