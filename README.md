@@ -6,8 +6,9 @@ a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.
 
 v0.1.0 published to npm. TODO for version 0.2.0:
 
-- [ ] Break out `compile` and `render` as separate tasks
-- [ ] Update to ensure compatibility with grunt 0.4.*
+
+ - [ ] Break out `compile` and `render` as separate tasks
+ - [ ] Update to ensure compatibility with grunt 0.4.*
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan --save-dev`
