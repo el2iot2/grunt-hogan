@@ -60,6 +60,18 @@ compile : {
 //...
 ```
 
+To specify a *custom* binder, use a path in the "binderName" directive:
+
+```javascript
+//...
+binderName : "./my/custom/binder.js"
+//...
+```
+
+Specifying a binder in this way means that `require('./my/custom/binder.js').Render(...)` will be called.
+See the [built-in binders](https://github.com/automatonic/grunt-hogan/tree/master/tasks/binder) for futher
+detail.
+
 There can be multiple template patterns:
 
 ```javascript
