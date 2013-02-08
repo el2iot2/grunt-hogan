@@ -6,6 +6,8 @@
  * Licensed under the MIT license.
  */
 
+var fs = require('fs');
+
 module.exports = function(grunt) {
 
   // ==========================================================================
@@ -49,12 +51,21 @@ module.exports = function(grunt) {
             return false;
         }
 
-
         function hoganCompile(templatePatterns, options) {
             options = options || {};
             options.binderName = options.binderName || "default";
             options.exportName = options.exportName || target;
             var binderPath = "./binder/"+options.binderName+".js";
+                        
+            try {
+                var stats = fs.lstatSync(options.binderName);
+                if (!stats.isDirectory()) {
+                    binderPath = options.binderName;
+                }
+            }
+            catch (e) {
+                return;
+            }
 
             options.batchRender = options.batchRender || require(binderPath).render;
             options.nameFunc = options.nameFunc || function(fileName) {

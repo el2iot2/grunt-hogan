@@ -38,6 +38,15 @@ module.exports = function(grunt) {
                     binderName: "bootstrap",
                 }
             }
+        },
+        customBinderPath : {
+            compile : {
+                templates : "view/binder/revealing.hogan",
+                output : "tasks/binder/customBinderPath.js",
+                options : {
+                    binderName: "./binder/hulk.js",
+                }
+            }
         }
     },
     test: {
