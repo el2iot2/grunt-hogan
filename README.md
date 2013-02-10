@@ -1,14 +1,6 @@
 # grunt-hogan
 
-a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.com) templates
-
-## Status
-
-v0.1.0 published to npm. TODO for version 0.2.0:
-
-
- - [ ] Break out `compile` and `render` as separate tasks
- - [ ] Update to ensure compatibility with grunt 0.4.*
+a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.com) templates 
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan --save-dev`
@@ -28,21 +20,18 @@ grunt.initConfig({
     hogan: {
         //desired target name
         mytarget : {
-            //indicate you want to compile templates
-            compile : {
-                //Wildcard of desired templates
-                templates : "view/**/*.hogan",
-                //output destination
-                output : "hulkingup.js"
-            }
+          //Wildcard of desired templates
+          templates : "view/**/*.hogan",
+          //output destination
+          output : "hulkingup.js"
         }
     },
     //...
 });
 ```
 
-By default, the templates will be "bound" by the default "binder" (which
-is itself a pre-compiled template). The "default" template generates javascript
+By default, the all compiled templates in a target will be "bound" together by the default "binder" (which
+is itself a pre-compiled template). The "default" binder generates javascript
 that is designed to work both as a node.js module and in the browser via a 
 `<script/>` tag. Also supported are the "hulk" binder (should output similarly to
 hogan's "hulk" command line tool...which is "vanilla" javascript), and the "nodejs"
@@ -52,7 +41,7 @@ To specify a binder, use a "binderName" directive:
 
 ```javascript
 //...
-compile : {
+mytarget : {
     templates : "view/**/*.hogan",
     output : "hulkingup.js",
     binderName : "hulk"
@@ -60,23 +49,23 @@ compile : {
 //...
 ```
 
-To specify a *custom* binder, use a path in the "binderName" directive:
+To specify a *custom* binder, supply a path for the "binder" attribute that resolves to a binder module:
 
 ```javascript
 //...
-binderName : "./my/custom/binder.js"
+binder : __dirname + "/my/custom/binder.js"
 //...
 ```
-
-Specifying a binder in this way means that `require('./my/custom/binder.js').Render(...)` will be called.
-See the [built-in binders](https://github.com/automatonic/grunt-hogan/tree/master/tasks/binder) for futher
-detail.
+See the `*custombinder*` targets in the 
+[example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/grunt.js) 
+for futher
+detail on creating and using custom binders.
 
 There can be multiple template patterns:
 
 ```javascript
 //...
-compile : {
+mytarget : {
     //...
     templates : ["view/wwf/*.hogan", "view/wcw/*.hogan"],
     //...
@@ -88,17 +77,20 @@ compile : {
 [getting_started]: https://github.com/gruntjs/grunt/blob/master/docs/getting_started.md
 
 ## Documentation
-_(Coming soon)_
+ * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/grunt.js)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
-_(Nothing yet)_
+ * 0.2.0 - [in progress](https://github.com/automatonic/grunt-hogan/issues?milestone=2&state=open)
+ * 0.1.1 - [*Breaking Changes* and Custom Binder Support](https://github.com/automatonic/grunt-hogan/issues?milestone=1)
+   * "render" directive has [been discarded](https://github.com/automatonic/grunt-hogan/issues/8)
+   * "options" notation has been discarded (supply attributes directly as keys on the target)
 
 ##Acknowledgements
  * a comment by "baz" [here](http://soenkerohde.com/2012/02/node-js-server-side-compile-hogan-js-templates/) pointed me in the right direction
 
 ## License
-Copyright (c) 2012 Elliott B. Edwards  
+Copyright (c) 2013 Elliott B. Edwards  
 Licensed under the MIT license.
