@@ -4,9 +4,7 @@ a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.
 
 ## Status
 
-v0.1.0 published to npm. TODO for version 0.2.0:
-
- - [ ] Update to ensure compatibility with grunt 0.4.*
+v0.1.1 published to npm. 
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan --save-dev`
@@ -36,8 +34,8 @@ grunt.initConfig({
 });
 ```
 
-By default, the templates will be "bound" by the default "binder" (which
-is itself a pre-compiled template). The "default" template generates javascript
+By default, the all compiled templates in a target will be "bound" together by the default "binder" (which
+is itself a pre-compiled template). The "default" binder generates javascript
 that is designed to work both as a node.js module and in the browser via a 
 `<script/>` tag. Also supported are the "hulk" binder (should output similarly to
 hogan's "hulk" command line tool...which is "vanilla" javascript), and the "nodejs"
