@@ -35,7 +35,8 @@ module.exports = function(grunt) {
         multi_custombinder : {
             templates : "./view/multi*.html",
             output : "./temp/multi.js",
-            binder: "./temp/custombinder.js"
+            //we specify our binder path relative to this script
+            binder: __dirname + "/temp/custombinder.js"
         }
     },
       
