@@ -28,13 +28,10 @@ grunt.initConfig({
     hogan: {
         //desired target name
         mytarget : {
-            //indicate you want to compile templates
-            compile : {
-                //Wildcard of desired templates
-                templates : "view/**/*.hogan",
-                //output destination
-                output : "hulkingup.js"
-            }
+          //Wildcard of desired templates
+          templates : "view/**/*.hogan",
+          //output destination
+          output : "hulkingup.js"
         }
     },
     //...
@@ -52,7 +49,7 @@ To specify a binder, use a "binderName" directive:
 
 ```javascript
 //...
-compile : {
+mytarget : {
     templates : "view/**/*.hogan",
     output : "hulkingup.js",
     binderName : "hulk"
@@ -60,23 +57,23 @@ compile : {
 //...
 ```
 
-To specify a *custom* binder, use a path in the "binderName" directive:
+To specify a *custom* binder, supply a path for the "binder" attribute:
 
 ```javascript
 //...
-binderName : "./my/custom/binder.js"
+binder : __dirname + "/my/custom/binder.js"
 //...
 ```
 
-Specifying a binder in this way means that `require('./my/custom/binder.js').Render(...)` will be called.
-See the [built-in binders](https://github.com/automatonic/grunt-hogan/tree/master/tasks/binder) for futher
+Specifying a binder in this way means that `require(__dirname + './my/custom/binder.js').Render(...)` will be called.
+See the [built-in binders](https://github.com/automatonic/grunt-hogan/tree/master/tasks/binder) readme for futher
 detail.
 
 There can be multiple template patterns:
 
 ```javascript
 //...
-compile : {
+mytarget : {
     //...
     templates : ["view/wwf/*.hogan", "view/wcw/*.hogan"],
     //...
@@ -94,7 +91,9 @@ _(Coming soon)_
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
-_(Nothing yet)_
+ * 0.1.1 - *Breaking Changes* and Custom Binder Support
+   * "render" directive has [been discarded](https://github.com/automatonic/grunt-hogan/issues/8)
+   * "options" notation has been discarded (supply attributes directly as keys on the target)
 
 ##Acknowledgements
  * a comment by "baz" [here](http://soenkerohde.com/2012/02/node-js-server-side-compile-hogan-js-templates/) pointed me in the right direction
