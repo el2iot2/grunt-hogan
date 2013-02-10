@@ -6,8 +6,6 @@ a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.
 
 v0.1.0 published to npm. TODO for version 0.2.0:
 
-
- - [ ] Break out `compile` and `render` as separate tasks
  - [ ] Update to ensure compatibility with grunt 0.4.*
 
 ## Getting Started
@@ -57,17 +55,17 @@ mytarget : {
 //...
 ```
 
-To specify a *custom* binder, supply a path for the "binder" attribute:
+To specify a *custom* binder, supply a path for the "binder" attribute that resolves to a binder module:
 
 ```javascript
 //...
 binder : __dirname + "/my/custom/binder.js"
 //...
 ```
-
-Specifying a binder in this way means that `require(__dirname + './my/custom/binder.js').Render(...)` will be called.
-See the [built-in binders](https://github.com/automatonic/grunt-hogan/tree/master/tasks/binder) readme for futher
-detail.
+See the `*custombinder*` targets in the 
+[example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/grunt.js) 
+for futher
+detail on creating and using custom binders.
 
 There can be multiple template patterns:
 
@@ -85,8 +83,7 @@ mytarget : {
 [getting_started]: https://github.com/gruntjs/grunt/blob/master/docs/getting_started.md
 
 ## Documentation
-_(Coming soon)_
-
+ * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/grunt.js)
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
@@ -99,5 +96,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
  * a comment by "baz" [here](http://soenkerohde.com/2012/02/node-js-server-side-compile-hogan-js-templates/) pointed me in the right direction
 
 ## License
-Copyright (c) 2012 Elliott B. Edwards  
+Copyright (c) 2013 Elliott B. Edwards  
 Licensed under the MIT license.
