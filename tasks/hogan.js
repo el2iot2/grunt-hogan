@@ -58,8 +58,10 @@ module.exports = function(grunt) {
             var binderPath = "./binder/"+options.binderName+".js";
                         
             try {
+                //Check if binderName is a path to a real file
                 var stats = fs.lstatSync(options.binderName);
-                if (!stats.isDirectory()) {
+                if (stats !== null && stats.isFile()) {
+                    //So we can allow a custom binder from the file specified
                     binderPath = options.binderName;
                 }
             }
