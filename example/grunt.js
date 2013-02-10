@@ -8,10 +8,8 @@ module.exports = function(grunt) {
         //the "simple_default" target will just compile a 
         //template with the "default" binder
         simple_default : {
-            compile : {
-                templates : "./view/simple.html",
-                output : "./temp/simple.js"
-            }
+            templates : "./view/simple.html",
+            output : "./temp/simple.js"
         },
         //the "multi_revealing" target will compile multiple
         //templates into a single file
@@ -19,37 +17,25 @@ module.exports = function(grunt) {
         //(resulting template javascript will follow the "revealing
         // module pattern")
         multi_revealing : {
-            compile : {
-                templates : "./view/multi*.html",
-                output : "./temp/multi.js",
-                options : {
-                    binderName: "revealing"
-                }
-            }
+            templates : "./view/multi*.html",
+            output : "./temp/multi.js",
+            binderName: "revealing"
         },
         //the "custombinder_bootstrap" target will compile
         //a new binder template (suitable for use as a binder
         //in other compiles)
         custombinder_bootstrap : {
-            compile : {
-                templates : "./view/custombinder.hogan",
-                output : "./temp/custombinder.js",
-                options : {
-                    binderName: "bootstrap"
-                }
-            }
+            templates : "./view/custombinder.hogan",
+            output : "./temp/custombinder.js",
+            binderName: "bootstrap"
         },
         //the "multi_custombinder" target will compile
         //the multi templates, but use the custom
         //binder built by the "custombinder_bootstrap" target
         multi_custombinder : {
-            compile : {
-                templates : "./view/multi*.html",
-                output : "./temp/multi.js",
-                options : {
-                    binderName: "./temp/custombinder.js"
-                }
-            }
+            templates : "./view/multi*.html",
+            output : "./temp/multi.js",
+            binder: "./temp/custombinder.js"
         }
     },
       

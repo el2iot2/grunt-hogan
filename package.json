@@ -30,7 +30,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "hogan.js": "~2.0.0"
+    "hogan.js": "~2.0.0",
+    "underscore": "~1.4.4"
   },
   "devDependencies": {
     "grunt": "~0.3.17",

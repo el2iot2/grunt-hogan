@@ -1,59 +1,32 @@
+"using strict";
 module.exports = function(grunt) {
 
    // Project configuration.
   grunt.initConfig({
     hogan: {
         nodejs : {
-            compile : {
-                templates : "view/binder/nodejs.hogan",
-                output : "tasks/binder/nodejs.js",
-                options : {
-                    binderName: "bootstrap",
-                }
-            }
+            templates : "view/binder/nodejs.hogan",
+            output : "tasks/binder/nodejs.js",
+            binderName: "bootstrap"
         },
         "default" : {
-            compile : {
-                templates : "view/binder/default.hogan",
-                output : "tasks/binder/default.js",
-                options : {
-                    binderName: "bootstrap",
-                }
-            }
+            templates : "view/binder/default.hogan",
+            output : "tasks/binder/default.js",
+            binderName: "bootstrap"
         },
         hulk : {
-            compile : {
-                templates : "view/binder/hulk.hogan",
-                output : "tasks/binder/hulk.js",
-                options : {
-                    binderName: "bootstrap",
-                }
-            }
+            templates : "view/binder/hulk.hogan",
+            output : "tasks/binder/hulk.js",
+            binderName: "bootstrap"
         },
         revealing : {
-            compile : {
-                templates : "view/binder/revealing.hogan",
-                output : "tasks/binder/revealing.js",
-                options : {
-                    binderName: "bootstrap",
-                }
-            }
-        },
-        customBinderPath : {
-            compile : {
-                templates : "view/binder/revealing.hogan",
-                output : "tasks/binder/customBinderPath.js",
-                options : {
-                    binderName: "./binder/hulk.js",
-                }
-            }
+            templates : "view/binder/revealing.hogan",
+            output : "tasks/binder/revealing.js",
+            binderName: "bootstrap"
         }
     },
-    test: {
-      files: ['test/**/*.js']
-    },
     lint: {
-      files: ['grunt.js', 'tasks/**/*.js', 'test/**/*.js']
+      files: ['grunt.js', 'tasks/**/*.js']
     },
     watch: {
       files: '<config:lint.files>',
@@ -80,7 +53,6 @@ module.exports = function(grunt) {
 
   // Load local tasks.
   grunt.loadTasks('tasks');
-
 
   // Default task.
   grunt.registerTask('default', 'hogan');
