@@ -4,7 +4,7 @@ a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.
 
 ## Getting Started
 
-*NOTE: This documentation is for grunt version 0.4+. To work with version 0.3.x, see [here](https://github.com/automatonic/grunt-hogan/blob/grunt-0.3/README.md) *
+> NOTE: This documentation is for grunt version 0.4+. To work with version 0.3.x, see [here](https://github.com/automatonic/grunt-hogan/blob/grunt-0.3/README.md)
 
 Install this grunt plugin next to your project's [Gruntfile.js][getting_started] with: `npm install grunt-hogan --save-dev`
 
