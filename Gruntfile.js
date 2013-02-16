@@ -23,6 +23,11 @@ module.exports = function(grunt) {
             templates : "view/binder/revealing.hogan",
             output : "tasks/binder/revealing.js",
             binderName: "bootstrap"
+        },
+        amd : {
+            templates : "view/binder/amd.hogan",
+            output : "tasks/binder/amd.js",
+            binderName: "bootstrap"
         }
     },
     lint: {
