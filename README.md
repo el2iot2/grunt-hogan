@@ -60,7 +60,7 @@ binder : __dirname + "/my/custom/binder.js"
 //...
 ```
 See the `*custombinder*` targets in the 
-[example gruntfile](https://github.com/gruntjs/grunt/wiki/Getting-started) 
+[example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js) 
 for futher
 detail on creating and using custom binders.
 
@@ -77,10 +77,10 @@ mytarget : {
 ```
 
 [grunt]: http://gruntjs.com/
-[getting_started]: https://github.com/gruntjs/grunt/blob/master/docs/getting_started.md
+[getting_started]: https://github.com/gruntjs/grunt/wiki/Getting-started
 
 ## Documentation
- * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/grunt.js)
+ * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
