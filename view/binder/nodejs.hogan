@@ -1,10 +1,10 @@
-var Hogan = require("hogan.js"),
-    templates = {};
+var Hogan = require('hogan.js');
+var templates = {};
 
 exports.templates = templates;
 
 {{#templates}}
-templates["{{name}}"] = new Hogan.Template({{{template}}});
+templates['{{name}}'] = new Hogan.Template({{{template}}});
 {{/templates}}
 
 exports.render = function(context, templateName) {
@@ -17,6 +17,6 @@ exports.render = function(context, templateName) {
                 return templates[name].render(context);
             }
         }
-        throw "could not resolve default template";
+        throw new Error('could not resolve default template');
     }
 }
