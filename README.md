@@ -60,7 +60,7 @@ binder : __dirname + "/my/custom/binder.js"
 //...
 ```
 See the `*custombinder*` targets in the 
-[example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/grunt.js) 
+[example gruntfile](https://github.com/gruntjs/grunt/wiki/Getting-started) 
 for futher
 detail on creating and using custom binders.
 
