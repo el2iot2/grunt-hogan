@@ -1,9 +1,10 @@
-# grunt-hogan
+# grunt-hogan (for grunt 0.3.x)
 
-a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.com) templates 
+a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.com) templates. These instructions are specific to the 0.3.x version of grunt.
+For a version that supports the latest grunt code, see the `master` branch.
 
 ## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan --save-dev`
+Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-hogan@grunt-0.3 --save-dev`
 
 Then add this line to your project's `grunt.js` gruntfile:
 
@@ -83,7 +84,7 @@ mytarget : {
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
- * 0.2.0 - [in progress](https://github.com/automatonic/grunt-hogan/issues?milestone=2&state=open)
+ * 0.1.1-4 - Branching support for grunt 0.3.x
  * 0.1.1 - [*Breaking Changes* and Custom Binder Support](https://github.com/automatonic/grunt-hogan/issues?milestone=1)
    * "render" directive has [been discarded](https://github.com/automatonic/grunt-hogan/issues/8)
    * "options" notation has been discarded (supply attributes directly as keys on the target)
