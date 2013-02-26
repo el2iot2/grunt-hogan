@@ -1,18 +1,21 @@
 define(['hogan'], function(Hogan) {
-	var partials = {};
-	var templates = {};
-	
-	{{#templates}}
-		partials["{{name}}"] = new Hogan.Template({{{template}}});
-	{{/templates}}
-	
-	for (var id in partials) {
-		templates[id] = (function(id) {
-			return function(context) {
-				return partials[id].render(context, partials);
-			}
-		})(id);
-	}
-
-	return templates;
+  var t = {
+    {{#templates}}
+    "{{name}}" : new Hogan.Template({{{template}}}){{comma}}
+    {{/templates}}
+  },
+  r = function(n) {
+    var tn = t[n];
+    return function(c, p, i) {
+      return tn.render(c, p || t, i);
+    }
+  };
+  return {
+    {{#exposeTemplates}}
+    templates : t,
+    {{/exposeTemplates}}
+	  {{#templates}}
+    "{{name}}" : r('{{name}}'){{comma}}
+    {{/templates}}
+  }
 });

@@ -83,15 +83,11 @@ module.exports = function(grunt) {
       var templateFilePaths = grunt.file.expand(templatePatterns);
       var templates = [];
 
-      options.defaultFunc = options.defaultFunc || function(fileName) {
-        return !_.any(templates); //first is default
-      };
-
       templateFilePaths.forEach(function(templateFilePath) {
         try {
           templates.push({
             name: options.nameFunc(templateFilePath) || 'NameFuncFailed',
-            isDefault: options.defaultFunc(templateFilePath),
+            comma: ',',
             template: hogan.compile(
             grunt.file.read(templateFilePath).toString(), {
               asString: true
@@ -104,12 +100,19 @@ module.exports = function(grunt) {
           throw error;
         }
       });
+      
+      //No comma on the last template
+      if (_.any(templates)) {
+        templates[templates.length -1].comma = '';
+      }
+      
       var context = { //build a context for the binder template to work against
         config: function() { //lambda that retrieves config parameters
           return function(text) {
             return grunt.config(text);
           };
         },
+        exposeTemplates : options.exposeTemplates,
         output: output,
         exportName: options.exportName,
         outputFileName: nodepath.basename(output, nodepath.extname(output)),

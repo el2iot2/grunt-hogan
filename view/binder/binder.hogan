@@ -1,0 +1,14 @@
+var Hogan = require('hogan.js');
+var t = null;
+{{#templates}}
+t = new Hogan.Template({{{template}}}){{comma}}
+{{/templates}}
+
+module.exports = {
+  {{#exposeTemplates}}
+  template : t,
+  {{/exposeTemplates}}
+  render : function(c, p, i) {
+    return t.render(c, p, i);
+  }
+}

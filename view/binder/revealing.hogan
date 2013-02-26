@@ -1,14 +1,21 @@
 var {{exportName}} = function() {
-
-{{#templates}}
-    var _{{name}} = new Hogan.Template({{{template}}});
-{{/templates}}
-
-   return {
-{{#templates}}
-        {{name}}: function render_{{name}}(context) {
-            return _{{name}}.render(context);
-        },
-{{/templates}}
-        termination: null;
+var t = {
+  {{#templates}}
+  "{{name}}" : new Hogan.Template({{{template}}}){{comma}}
+  {{/templates}}
+},
+r = function(n) {
+  var tn = t[n];
+  return function(c, p, i) {
+    return tn.render(c, p || t, i);
+  }
+};
+return {
+  {{#exposeTemplates}}
+  templates : t,
+  {{/exposeTemplates}}
+  {{#templates}}
+  "{{name}}" : r('{{name}}'){{comma}}
+  {{/templates}}
+}
 }();
