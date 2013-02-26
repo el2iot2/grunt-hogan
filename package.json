@@ -1,7 +1,7 @@
 {
   "name": "grunt-hogan",
   "description": "a grunt task to compile/precompile hogan templates",
-  "version": "0.2.0-1",
+  "version": "0.2.1-0",
   "homepage": "https://github.com/automatonic/grunt-hogan",
   "author": {
     "name": "Elliott B. Edwards",
