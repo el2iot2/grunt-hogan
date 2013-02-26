@@ -79,13 +79,19 @@ module.exports = function(grunt) {
       options.nameFunc = options.nameFunc || function(fileName) {
         return nodepath.basename(fileName, nodepath.extname(fileName));
       };
+      
       var templateFilePaths = grunt.file.expand(templatePatterns);
       var templates = [];
+
+      options.defaultFunc = options.defaultFunc || function(fileName) {
+        return !_.any(templates); //first is default
+      };
 
       templateFilePaths.forEach(function(templateFilePath) {
         try {
           templates.push({
             name: options.nameFunc(templateFilePath) || 'NameFuncFailed',
+            isDefault: options.defaultFunc(templateFilePath),
             template: hogan.compile(
             grunt.file.read(templateFilePath).toString(), {
               asString: true
