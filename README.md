@@ -87,7 +87,9 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
  * 0.2.- - [in progress](https://github.com/automatonic/grunt-hogan/issues?milestone=2&state=open)
- * 0.2.1 - *Breaking change* for amd binder. Now exports a render function instead of the full template
+ * 0.2.1 - AMD Binder
+   * Now supports use of "sibling templates" (defined within the same binder) as partials
+   * *Breaking change* - Now exports a render function instead of the full template
  * 0.1.1 - [*Breaking Changes* and Custom Binder Support](https://github.com/automatonic/grunt-hogan/issues?milestone=1)
    * "render" directive has [been discarded](https://github.com/automatonic/grunt-hogan/issues/8)
    * "options" notation has been discarded (supply attributes directly as keys on the target)
