@@ -37,8 +37,9 @@ By default, the all compiled templates in a target will be "bound" together by t
 is itself a pre-compiled template). The "default" binder generates javascript
 that is designed to work both as a node.js module and in the browser via a 
 `<script/>` tag. Also supported are the "hulk" binder (should output similarly to
-hogan's "hulk" command line tool...which is "vanilla" javascript), and the "nodejs"
-binder, which provides a pure node.js format. You can also create your own binder templates to support other usages.
+hogan's "hulk" command line tool...which is "vanilla" javascript), the "nodejs"
+binder, which provides a pure node.js format and the "amd" binder, which provides support for amd modules. 
+You can also create your own binder templates to support other usages.
 
 To specify a binder, use a "binderName" directive:
 
