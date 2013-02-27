@@ -1,20 +1,8 @@
-var Hogan = require("hogan.js"),
-    templates = {};
+var Hogan = require('hogan.js');
+var t = new Hogan.Template(function(c,p,i){var _=this;_.b(i=i||"");_.b("var Hogan = require('hogan.js');");_.b("\n" + i);_.b("var t = {");_.b("\n" + i);if(_.s(_.f("templates",c,p,1),c,p,0,111,173,"{{ }}")){_.rs(c,p,function(c,p,_){_.b("  '");_.b(_.v(_.f("name",c,p,0)));_.b("' : new Hogan.Template(");_.b(_.t(_.f("template",c,p,0)));_.b(")");_.b(_.v(_.f("comma",c,p,0)));_.b("\n");});c.pop();}_.b("},");_.b("\n" + i);_.b("r = function(n) {");_.b("\n" + i);_.b("  var tn = t[n];");_.b("\n" + i);_.b("  return function(c, p, i) {");_.b("\n" + i);_.b("    return tn.render(c, p || t, i);");_.b("\n" + i);_.b("  }");_.b("\n" + i);_.b("};");_.b("\n" + i);_.b("module.exports = {");_.b("\n" + i);if(_.s(_.f("exposeTemplates",c,p,1),c,p,0,339,359,"{{ }}")){_.rs(c,p,function(c,p,_){_.b("  templates : t,");_.b("\n");});c.pop();}if(_.s(_.f("templates",c,p,1),c,p,0,396,437,"{{ }}")){_.rs(c,p,function(c,p,_){_.b("  '");_.b(_.v(_.f("name",c,p,0)));_.b("' : r('");_.b(_.v(_.f("name",c,p,0)));_.b("')");_.b(_.v(_.f("comma",c,p,0)));_.b("\n");});c.pop();}_.b("}");return _.fl();;});
 
-exports.templates = templates;
-
-templates["nodejs"] = new Hogan.Template(function(c,p,i){var _=this;_.b(i=i||"");_.b("var Hogan = require('hogan.js');");_.b("\n" + i);_.b("var templates = {};");_.b("\n" + i);_.b("\n" + i);_.b("exports.templates = templates;");_.b("\n" + i);_.b("\n" + i);if(_.s(_.f("templates",c,p,1),c,p,0,100,161,"{{ }}")){_.rs(c,p,function(c,p,_){_.b("templates['");_.b(_.v(_.f("name",c,p,0)));_.b("'] = new Hogan.Template(");_.b(_.t(_.f("template",c,p,0)));_.b(");");_.b("\n");});c.pop();}_.b("\n" + i);_.b("exports.render = function(context, templateName) {");_.b("\n" + i);_.b("    if (templateName) {");_.b("\n" + i);_.b("        return templates[templateName].render(context);");_.b("\n" + i);_.b("    }");_.b("\n" + i);_.b("    else {");_.b("\n" + i);_.b("        for (name in templates) {");_.b("\n" + i);_.b("            if (templates.hasOwnProperty(name) && typeof(name) !== 'function') {");_.b("\n" + i);_.b("                return templates[name].render(context);");_.b("\n" + i);_.b("            }");_.b("\n" + i);_.b("        }");_.b("\n" + i);_.b("        throw new Error('could not resolve default template');");_.b("\n" + i);_.b("    }");_.b("\n" + i);_.b("}");return _.fl();;});
-
-exports.render = function(context, templateName) {
-    if (templateName) {
-        return templates[templateName].render(context);
-    }
-    else {
-        for (name in templates) {
-            if (templates.hasOwnProperty(name) && typeof(name) !== 'function') {
-                return templates[name].render(context);
-            }
-        }
-        throw "could not resolve default template";
-    }
+module.exports = {
+  render : function(c, p, i) {
+    return t.render(c, p, i);
+  }
 }
