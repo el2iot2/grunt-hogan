@@ -1,8 +1,9 @@
+{{!the default binder targets both node and script usages}}
 (function (exports) {
   var Hogan = require('hogan.js');
   var t = {
     {{#templates}}
-    "{{name}}" : new Hogan.Template({{{template}}}){{comma}}
+    '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
     {{/templates}}
   },
   r = function(n) {
@@ -16,7 +17,7 @@
     templates : t,
     {{/exposeTemplates}}
     {{#templates}}
-    "{{name}}" : r('{{name}}'){{comma}}
+    '{{name}}' : r('{{name}}'){{comma}}
     {{/templates}}
   }
 }(typeof exports === 'undefined' ? (this.{{exportName}} = {}) : exports));

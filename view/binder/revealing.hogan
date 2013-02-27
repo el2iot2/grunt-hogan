@@ -1,7 +1,8 @@
+{{The revealing binder uses the revealing module pattern}}
 var {{exportName}} = function() {
 var t = {
   {{#templates}}
-  "{{name}}" : new Hogan.Template({{{template}}}){{comma}}
+  '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
   {{/templates}}
 },
 r = function(n) {
@@ -15,7 +16,7 @@ return {
   templates : t,
   {{/exposeTemplates}}
   {{#templates}}
-  "{{name}}" : r('{{name}}'){{comma}}
+  '{{name}}' : r('{{name}}'){{comma}}
   {{/templates}}
 }
 }();

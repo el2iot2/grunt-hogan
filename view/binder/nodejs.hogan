@@ -1,7 +1,8 @@
+{{!the nodejs binder exports a simple node module}}
 var Hogan = require('hogan.js');
 var t = {
   {{#templates}}
-  "{{name}}" : new Hogan.Template({{{template}}}){{comma}}
+  '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
   {{/templates}}
 },
 r = function(n) {
@@ -15,6 +16,6 @@ module.exports = {
   templates : t,
   {{/exposeTemplates}}
   {{#templates}}
-  "{{name}}" : r('{{name}}'){{comma}}
+  '{{name}}' : r('{{name}}'){{comma}}
   {{/templates}}
 }
