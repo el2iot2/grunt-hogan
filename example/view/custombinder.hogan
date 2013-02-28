@@ -1,21 +1,16 @@
-/*Note that unterminated javascript comments*/
-/*will give you trouble*/
-/*as hogan compiles to a single line of javascript */
-/*so comment your binder carefully*/
-var custom_{{exportName}} = function(){
+{{!
+  /*"multiline" style comment example*/
+  Note that single line javascript comments
+  will give you trouble
+  as hogan compiles to a single line of javascript
+  so comment your binder carefully
+}}
 
-{{#templates}}
-    var _{{name}} = new Hogan.Template({{{template}}});
-{{/templates}}
-
-   return {
-{{#templates}}
-        {{name}}: function render_{{name}}(context) {
-            return _{{name}}.render(context);
-        },
-{{/templates}}
-        termination: null;
-}();
-
-
-
+/*an amd binder that returns you the templates*/
+define(['hogan'], function (Hogan) {
+  var templates = {};
+  {{#templates}}
+  templates["{{name}}"] = new Hogan.Template({{{template}}});
+  {{/templates}}        
+  return templates;
+});

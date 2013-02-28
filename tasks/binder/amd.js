@@ -5,4 +5,4 @@ module.exports = {
   render : function(c, p, i) {
     return t.render(c, p, i);
   }
-}
+};

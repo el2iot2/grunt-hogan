@@ -18,4 +18,4 @@ module.exports = {
   {{#templates}}
   '{{name}}' : r('{{name}}'){{comma}}
   {{/templates}}
-}
+};

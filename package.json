@@ -34,7 +34,7 @@
     "underscore": "~1.4.4"
   },
   "devDependencies": {
-    "grunt": "0.4.0rc8"
+    "grunt": "~0.4.0"
   },
   "keywords": [
     "gruntplugin"
