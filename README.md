@@ -23,9 +23,9 @@ grunt.initConfig({
         //desired target name
         mytarget : {
           //path to input template
-          template : "view/chair.hogan",
+          template : 'view/chair.hogan',
           //output path, relative to Gruntfile.js
-          output : "bandanna.js"
+          output : 'bandanna.js'
         }
     },
     //...
@@ -41,9 +41,9 @@ grunt.initConfig({
         //desired target name
         mytarget : {
           //Wildcard of desired templates
-          templates : "view/**/*.hogan",
+          templates : 'view/**/*.hogan',
           //output destination
-          output : "hulkingup.js"
+          output : 'hulkingup.js'
         }
     },
     //...
@@ -56,7 +56,7 @@ grunt.initConfig({
 //...
 mytarget : {
     //...
-    templates : ["view/wwf/*.hogan", "view/wcw/*.hogan"],
+    templates : ['view/wwf/*.hogan', 'view/wcw/*.hogan'],
     //...
 }
 //...
@@ -81,9 +81,9 @@ To specify a binder, use a "binderName" directive:
 ```javascript
 //...
 mytarget : {
-    templates : "view/**/*.hogan",
-    output : "hulkingup.js",
-    binderName : "hulk"
+    templates : 'view/**/*.hogan',
+    output : 'hulkingup.js',
+    binderName : 'hulk'
 }
 //...
 ```
@@ -93,7 +93,7 @@ To specify a *custom* binder, supply a path for the "binder" attribute (note tha
 
 ```javascript
 //...
-binder : __dirname + "/my/custom/binder.js"
+binder : __dirname + '/my/custom/binder.js'
 //...
 ```
 See the `custombinder_bootstrap` and `multi_custombinder` targets in the 
@@ -112,7 +112,7 @@ Given a precompile task like:
 ```javascript
 mytarget : {
   templates : ['view/fist.html', 'view/foe.html', 'view/what.you.gonna.do.html'],
-  output : "templates.js",
+  output : 'templates.js',
   binderName : 'nodejs'
 }
 ```
@@ -138,6 +138,37 @@ All of the binders (with the exceptions of special case binders like the bootstr
 Also, if a partial parameter is not specified, the default render behavior is to make all the other templates in the binder ("sibling templates") available as partials in the render.
 
 Other templates will vary slightly in their syntax to support their purpose.
+
+###Template naming
+
+The default behavior of `grunt-hogan` is to use the input templates file name (without the extension) as the name of the template in the output, precompiled result.
+
+Thus an input of `view/yada.hogan` will be available as `templates.yada(...)`. However, there are plenty of scenarios where
+one may want to customize this behavior. This is accomplished via the `nameFunc` directive on a task:
+
+```javascript
+mytarget : {
+    templates : './view/multi*.html',
+    output : './temp/namefunc.js',
+    binderName: 'hulk',
+    
+    //Specify a custom name function
+    nameFunc: function(fileName) {
+      
+      //Grab the path package here locally for clarity
+      var _path = require('path');
+      
+      //'yada/yada/multi.1.js' -> 'multi.1'
+      var name = _path
+        .basename(
+          fileName, 
+          _path.extname(fileName));
+          
+      //'multi.1' -> 'name_1'
+      return 'name_'+name[6];
+    }
+}
+```
 
 ## Examples
  * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js)
