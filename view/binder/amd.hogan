@@ -9,7 +9,7 @@ define(['hogan'], function(Hogan) {
     var tn = t[n];
     return function(c, p, i) {
       return tn.render(c, p || t, i);
-    }
+    };
   };
   return {
     {{#exposeTemplates}}
@@ -18,5 +18,5 @@ define(['hogan'], function(Hogan) {
 	  {{#templates}}
     '{{name}}' : r('{{name}}'){{comma}}
     {{/templates}}
-  }
+  };
 });

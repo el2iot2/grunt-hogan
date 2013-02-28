@@ -1,6 +1,6 @@
 # grunt-hogan
 
-a [grunt](http://gruntjs.com) task to compile/precompile [hogan](http://hoganjs.com) templates 
+a [grunt](http://gruntjs.com) task to precompile [hogan](http://hoganjs.com) templates 
 
 ## Getting Started
 
@@ -14,8 +14,25 @@ Then add this line to your project's `Gruntfile.js`:
 grunt.loadNpmTasks('grunt-hogan');
 ```
 
-To compile multiple mustache templates to a single output file, 
-your config should look like this:
+To precompile a single template into a single output file:
+
+```javascript
+grunt.initConfig({
+    //...
+    hogan: {
+        //desired target name
+        mytarget : {
+          //path to input template
+          template : "view/chair.hogan",
+          //output path, relative to Gruntfile.js
+          output : "bandanna.js"
+        }
+    },
+    //...
+});
+```
+
+###Multiple input templates via patterns
 
 ```javascript
 grunt.initConfig({
@@ -33,13 +50,31 @@ grunt.initConfig({
 });
 ```
 
-By default, the all compiled templates in a target will be "bound" together by the default "binder" (which
+###Multiple input template patterns
+
+```javascript
+//...
+mytarget : {
+    //...
+    templates : ["view/wwf/*.hogan", "view/wcw/*.hogan"],
+    //...
+}
+//...
+```
+
+##"Binders"
+
+By default, the all compiled templates in a single grunt target will be "bound" together by the default "binder" (which
 is itself a pre-compiled template). The "default" binder generates javascript
 that is designed to work both as a node.js module and in the browser via a 
-`<script/>` tag. Also supported are the "hulk" binder (should output similarly to
-hogan's "hulk" command line tool...which is "vanilla" javascript), the "nodejs"
-binder, which provides a pure node.js format and the "amd" binder, which provides support for amd modules. 
-You can also create your own binder templates to support other usages.
+`<script/>` tag. Other built-in binders are:
+
+  * "hulk" - should output similarly to hogan's "hulk" command line tool...which is "vanilla" javascript
+  * "nodejs" - exposes compiled templates as a node.js module
+  * "amd" - exposes compiled templates in amd format
+  * "revealing" - exposes compile templates via the revealing module pattern 
+
+You can also create your own binder templates to support other usages. See "Custom Binders" section below.
 
 To specify a binder, use a "binderName" directive:
 
@@ -52,35 +87,59 @@ mytarget : {
 }
 //...
 ```
+###Custom Binders
 
-To specify a *custom* binder, supply a path for the "binder" attribute that resolves to a binder module:
+To specify a *custom* binder, supply a path for the "binder" attribute (note that this differs from the "binderName" in examples above) that resolves to a binder module:
 
 ```javascript
 //...
 binder : __dirname + "/my/custom/binder.js"
 //...
 ```
-See the `*custombinder*` targets in the 
+See the `custombinder_bootstrap` and `multi_custombinder` targets in the 
 [example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js) 
-for futher
-detail on creating and using custom binders.
-
-There can be multiple template patterns:
-
-```javascript
-//...
-mytarget : {
-    //...
-    templates : ["view/wwf/*.hogan", "view/wcw/*.hogan"],
-    //...
-}
-//...
-```
+for futher detail on creating and using custom binders.
 
 [grunt]: http://gruntjs.com/
 [getting_started]: https://github.com/gruntjs/grunt/wiki/Getting-started
 
-## Documentation
+###Using precompiled templates
+
+As of version 0.2.2, all built in binders create javascript that functions similarly in intention, but varies with respect to the target use.
+
+Given a precompile task like:
+
+```javascript
+mytarget : {
+  templates : ['view/fist.html', 'view/foe.html', 'view/what.you.gonna.do.html'],
+  output : "templates.js",
+  binderName : 'nodejs'
+}
+```
+A node.js application could:
+
+```javascript
+//Load the module
+var templates = require('./templates.js');
+
+//Render a template with a context object
+var html1 = templates.fist({knuckles: true});
+
+//Render a template with context and partial templates
+var html2 = templates.foe({}, {partialName: partialTemplateFromSomewhere});
+
+//Render a template with a non-variable-like name
+var html3 = templates['what.you.gonna.do']({context:'catchphrase'});
+
+```
+
+All of the binders (with the exceptions of special case binders like the bootstrap and "hulk") seek to expose the full api of the template render in this manner.
+
+Also, if a partial parameter is not specified, the default render behavior is to make all the other templates in the binder ("sibling templates") available as partials in the render.
+
+Other templates will vary slightly in their syntax to support their purpose.
+
+## Examples
  * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js)
 
 ## Contributing
@@ -88,6 +147,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
  * 0.2.- - [in progress](https://github.com/automatonic/grunt-hogan/issues?milestone=2&state=open)
+ * 0.2.2 - Binder template overhaul
+   * Added partial support on render functions
+   * Sibling partials by default
+   * *Breaking changes for precompiled template API*
  * 0.2.1 - AMD Binder
    * Now supports use of "sibling templates" (defined within the same binder) as partials
    * *Breaking change* - Now exports a render function instead of the full template

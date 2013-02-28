@@ -10,7 +10,7 @@
     var tn = t[n];
     return function(c, p, i) {
       return tn.render(c, p || t, i);
-    }
+    };
   };
   return {
     {{#exposeTemplates}}
@@ -19,5 +19,5 @@
     {{#templates}}
     '{{name}}' : r('{{name}}'){{comma}}
     {{/templates}}
-  }
+  };
 }(typeof exports === 'undefined' ? (this.{{exportName}} = {}) : exports));
