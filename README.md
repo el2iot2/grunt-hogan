@@ -169,7 +169,67 @@ mytarget : {
     }
 }
 ```
+## Partial Templates
+Hogan supports Partial Templates as defined by the [mustache spec](http://mustache.github.io/mustache.5.html).
 
+Say we have a template (defined in a file named `message.hogan`):
+```
+<p>Dear {{name}}, {{> mypartial}}</p>
+```
+And another template (defined in `mypartial.hogan`):
+```
+<em>{{text}}</em>
+```
+Assuming you use a `grunt-hogan` task to compile both these templates into a single module, you end up with a template render object something like:
+```javascript
+{
+    message: func(...){...},
+    mypartial: func(...){...}
+}
+```
+We want Hogan to now expand the `mypartial` template and interpret the `message` template as:
+```
+<p>Dear {{name}}, <em>{{text}}</em></p>
+```
+But how do we give Hogan what it needs to resolve the `mypartial` template? `grunt-hogan` supports this through three features:
+### 1. "Sibling" Partial Templates
+By default, if you call the render function with just a context object:
+```javascript
+template.message({name:'Hulk', text:'Have a nice day!'});
+```
+`grunt-hogan` will make the `mypartial` template available to the `message` template *automatically*. 
+This will happen if:
+
+  1. `message.hogan` and `mypartial.hogan` were bound together into a single template render module
+  2. The `nameFunc` (if specified) preserves the partial name `mypartial` mentioned in the `message.hogan` template
+
+Since `grunt-hogan` exposes the render as a function, this is the intended "common practice" for partial templates. 
+
+*If you want a partial template to be automatically available, bind it as a sibling template with the template that depends on it.*
+
+### 2. Explicit Partial Templates
+To disable the default behavior of "Sibling" Partial Templates, you simply specify the second parameter:
+```javascript
+template.message(
+    {name:'Hulk', text:'Have a nice day!'}, //context
+    {mypartial: getMyPartialFromSomewhere()} //partials
+    );
+```
+But now you are on your own when resolving the `Hogan.Template` objects passed through to the Hogan render. Hogan will use the passed partials only if they are valid `Hogan.Template` instances.
+### 3. Use the `exposeTemplates` task option
+If you don't know at template compile time what partials are needed, 
+and/or can't/won't put templates together as "Siblings", then you will need a way to retrieve the actual 
+`Hogan.Template` instances from `grunt-hogan` modules. 
+To do this, specify the `exposeTemplates` option on the compile task. 
+Doing so makes the actual templates available as a `template` property on the module:
+```javascript
+{
+    message: func(...){...},
+    mypartial: func(...){...},
+    templates: { message: {...}, mypartial: {...}}
+}
+```
+Using this, you can pass the actual `Hogan.Template` instance to wherever it is needed (with the "Explicit Partial Templates" mentioned above, for example).
 ## Examples
  * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js)
 
