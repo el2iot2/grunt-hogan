@@ -61,5 +61,7 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', 'hogan');
+  
+  grunt.registerTask('ci', ['hogan', 'lint']);
 
 };
