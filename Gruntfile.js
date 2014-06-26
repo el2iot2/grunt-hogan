@@ -30,14 +30,13 @@ module.exports = function(grunt) {
         binderName: 'bootstrap'
       }
     },
-    lint: {
-      files: ['grunt.js', 'tasks/**/*.js']
-    },
     watch: {
       files: '<config:lint.files>',
       tasks: 'default'
     },
     jshint: {
+      before: ['Gruntfile.js', 'tasks/hogan.js', 'example/Gruntfile.js'],
+      after: ['tasks/binder/*.js']
       options: {
         curly: true,
         eqeqeq: true,
@@ -58,10 +57,12 @@ module.exports = function(grunt) {
 
   // Load local tasks.
   grunt.loadTasks('tasks');
+  
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task.
   grunt.registerTask('default', 'hogan');
   
-  grunt.registerTask('ci', ['hogan', 'lint']);
+  grunt.registerTask('ci', ['jshint:before', 'hogan', 'jshint:after']);
 
 };
