@@ -2,6 +2,8 @@
 
 a [grunt](http://gruntjs.com) task to precompile [hogan](http://hoganjs.com) templates 
 
+[![Build status](https://ci.appveyor.com/api/projects/status/7sl7shna3qi0uo74)](https://ci.appveyor.com/project/automatonic/grunt-hogan)
+
 ## Getting Started
 
 > NOTE: This documentation is for grunt version 0.4+. To work with version 0.3.x, see [here](https://github.com/automatonic/grunt-hogan/blob/grunt-0.3/README.md)
