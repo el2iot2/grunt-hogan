@@ -36,7 +36,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       before: ['Gruntfile.js', 'tasks/hogan.js', 'example/Gruntfile.js'],
-      after: ['tasks/binder/*.js']
+      after: ['tasks/binder/*.js'],
       options: {
         curly: true,
         eqeqeq: true,
