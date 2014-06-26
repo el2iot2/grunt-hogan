@@ -1,6 +1,6 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
-version: 0.2.{build}
+version: 0.2.2-{build}
 
 # branches to build
 branches:
@@ -21,15 +21,16 @@ install:
   - npm install -g grunt-cli
   - npm install
 
+# Build the plugin and then link it for testing examples
+build_script:
+  - grunt
+  - npm link
+  
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
-  # We test multiple Windows shells because of prior stdout buffering issues
-  # filed against Grunt. https://github.com/joyent/node/issues/3584
-  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
-  - cmd: npm test
-
-# Don't actually build.
-build: off
+  - ps: "cd ./example"
+  - ps: "npm link grunt-hogan"
+  - ps: "grunt"
