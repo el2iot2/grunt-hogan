@@ -32,6 +32,6 @@ test_script:
   - node --version
   - npm --version
   - ps: "cd ./example"
-  - ps: "npm link grunt-hogan"
-  - ps: "npm install grunt-contrib-jshint --save-dev"
-  - ps: "grunt"
+  - npm install grunt-contrib-jshint --save-dev
+  - npm link grunt-hogan
+  - grunt
