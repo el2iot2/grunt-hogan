@@ -1,0 +1,22 @@
+{{!Make a collection of named templates available via an AMD}}
+define(['hogan'], function(Hogan) {
+  var t = {
+    {{#templates}}
+    '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
+    {{/templates}}
+  },
+  r = function(n) {
+    var tn = t[n];
+    return function(c, p, i) {
+      return tn.render(c, p || t, i);
+    };
+  };
+  return {
+    {{#exposeTemplates}}
+    templates : t,
+    {{/exposeTemplates}}
+	  {{#templates}}
+    '{{name}}' : r('{{name}}'){{comma}}
+    {{/templates}}
+  };
+});

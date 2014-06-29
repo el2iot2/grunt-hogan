@@ -3,116 +3,158 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    
     //configure a grunt-hogan task
     hogan: {
-      //the 'simple_default' target will just compile a 
-      //template with the 'default' binder
-      simple_default : {
-        templates : './view/simple.html',
-        output : './temp/simple.js'
+      //It is a "multitarget" task so each key is a new, arbitrarily-named target
+    
+    
+      //the 'simple' target compiles the src template
+      //into the destination file
+      simple : {
+        src: './view/simple.html',
+        dest: './tmp/simple.js'
       },
-      //the 'multi_revealing' target will compile multiple
-      //templates into a single file
-      //using the specified 'revealing' binder
+    
+      //the 'multi' target compiles the matched src templates
+      //into the destination file
+      multi: {
+        src : './view/multi*.html',
+        dest : './tmp/multi.js'
+      },
+      
+      //use the 'revealing' binder
       //(resulting template javascript will follow the 'revealing
       // module pattern')
-      multi_revealing : {
-        templates : './view/multi*.html',
-        output : './temp/multi_revealing.js',
-        binderName: 'revealing'
+      use_revealing: {
+        src : './view/multi*.html',
+        dest : './tmp/multi_revealing.js',
+        options: { binderName: 'revealing' }
       },
-      //the 'multi_amd' target will compile multiple
-      //templates into a single file
-      //using the specified 'amd' binder
+      
+      //use the 'amd' binder
       //(resulting template javascript will follow the 'abstract
       // module definition')
-      multi_amd : {
-        templates : './view/multi*.html',
-        output : './temp/multi_amd.js',
-        binderName: 'amd'
+      use_amd : {
+        src : './view/multi*.html',
+        dest : './tmp/multi_amd.js',
+        options: { binderName: 'amd' }
       },
-      //the 'custombinder_bootstrap' target will compile
-      //a new binder template (suitable for use as a binder
-      //in other compiles)
-      custombinder_bootstrap : {
-        templates : './view/custombinder.hogan',
-        output : './temp/custombinder.js',
-        binderName: 'bootstrap'
+      
+      //compile a template that can be used
+      //as a grunt-hogan "binder template"
+      //Uses the (required) "bootstrap" binder template
+      bootstrap_custombinder : {
+        src : './view/custombinder.hogan',
+        dest : './tmp/custombinder.js',
+        options: { binderName: 'bootstrap' }
       },
-      //the 'multi_custombinder' target will compile
-      //the multi templates, but use the custom
-      //binder built by the 'custombinder_bootstrap' target
-      multi_custombinder : {
-        templates : './view/multi*.html',
-        output : './temp/multi_custombinder.js',
+      
+      //use the custom binder with an explicit path
+      custombinder : {
+        src : './view/multi*.html',
+        dest : './tmp/multi_custombinder.js',
+        //a binder path relative to this script
+        options: { binderPath: __dirname + '/tmp/custombinder.js' }
+      },
+      
+      //this time into the "binders" subfolder
+      bootstrap_custombinder2 : {
+        src : './view/custombinder.hogan',
+        dest : './binders/custombinder2.js',
+        options: { binderName: 'bootstrap' }
+      },
+      
+      //use the custom binder with just its name
+      custombinder2 : {
+        src : './view/multi*.html',
+        dest : './tmp/multi_custombinder2.js',
         //we specify our binder path relative to this script
-        binder: __dirname + '/temp/custombinder.js'
+        options: { binder: 'custombinder2' }
       },
+      
       //the 'namefunc' target will compile
       //the multi templates giving each a custom
       //name via nameFunc
       namefunc : {
-        templates : './view/multi*.html',
-        output : './temp/namefunc.js',
-        binderName: 'hulk',
-        
-        //Specify a custom name function
-        nameFunc: function(fileName) {
-          
-          //Grab the path package here locally for clarity
-          var _path = require('path');
-          
-          //'yada/yada/multi.1.js' -> 'multi.1'
-          var name = _path
-            .basename(
-              fileName, 
-              _path.extname(fileName));
-              
-          //'multi.1' -> 'name_1'
-          return 'name_'+name[6];
+        src : './view/multi*.html',
+        dest : './tmp/namefunc.js',
+        options: {
+          binderName: 'hulk',
+          //Specify a custom name function
+          nameFunc: function(fileName) {
+            
+            //Grab the path package here locally for clarity
+            var _path = require('path');
+            
+            //'yada/yada/multi.1.js' -> 'multi.1'
+            var name = _path
+              .basename(
+                fileName, 
+                _path.extname(fileName));
+                
+            //'multi.1' -> 'name_1'
+            return 'name_'+name[6];
+          }
+        }
+      },
+      //Run option sets
+      old_options: {
+        templates: 'view/binder/amd.hogan',
+        output: 'tasks/binder/amd.js',
+        binderName: 'bootstrap'
+      },
+      default_options: {
+        options: {
+        },
+        files: {
+          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
+        }
+      },
+      custom_options: {
+        options: {
+          separator: ': ',
+          punctuation: ' !!!'
+        },
+        files: {
+          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
         }
       }
     },
-      
-    //The rest is from the boilerplate generated by 'grunt init:node'
-    pkg: '<json:package.json>',
+    
+    //lint the example!
     jshint: {
+      code: ['Gruntfile.js', '<%= nodeunit.tests %>'],
+      results: ['tmp/*.js'], //Make sure our results are valid javascript
       options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        node: true,
-        globals: {
-          exports: true
-        }
-      },
-      files: ['grunt.js', 'lib/**/*.js']
+        jshintrc: '.jshintrc'
+      }
     },
-    watch: {
-      files: '<config:lint.files>',
-      tasks: 'default'
-    }
+    clean: {
+      tests: ['tmp', 'binders/custombinder2.js']
+    },
   });
 
+  //Load the grunt-hogan plugin!
   grunt.loadNpmTasks('grunt-hogan');
+  
+  //And then some other, usual, testy stuff
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
-  // Default task.
-  grunt.registerTask(
-    'default', 
-    [
-      'jshint', 
-      'hogan:simple_default', 
-      'hogan:multi_revealing',
-      'hogan:multi_amd',
-      'hogan:custombinder_bootstrap', 
-      'hogan:multi_custombinder',
-      'hogan:namefunc']);
+  grunt.registerTask('custombinders', ['custombinders'])
+
+  //What you would normally use (give or take lint/testing/etc)
+  grunt.registerTask('default', 'hogan');
+  
+  
+    
+  //But our test task will lint and verify the results
+  grunt.registerTask('test', [
+      'jshint:code', 
+      'hogan',
+      'jshint:results',
+      'nodeunit'
+    ]);
 };

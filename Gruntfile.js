@@ -3,66 +3,65 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    jshint: {
+      code: [
+        'Gruntfile.js', 
+        'tasks/*.js', 
+        'example/Gruntfile.js', 
+        '<%= nodeunit.tests %>'],
+      binders: ['tasks/binder/*.js'],
+      options: {
+        jshintrc: '.jshintrc'
+      }
+    },
+    clean: {
+      tests: ['tmp']
+    },
     hogan: {
+      //Build binder templates
       nodejs: {
-        templates: 'view/binder/nodejs.hogan',
-        output: 'tasks/binder/nodejs.js',
-        binderName: 'bootstrap'
+        src: 'view/binder/nodejs.hogan',
+        dest: 'tasks/binder/nodejs.js'
       },
       'default': {
-        templates: 'view/binder/default.hogan',
-        output: 'tasks/binder/default.js',
-        binderName: 'bootstrap'
+        src: 'view/binder/default.hogan',
+        dest: 'tasks/binder/default.js'
       },
       hulk: {
-        templates: 'view/binder/hulk.hogan',
-        output: 'tasks/binder/hulk.js',
-        binderName: 'bootstrap'
+        src: 'view/binder/hulk.hogan',
+        dest: 'tasks/binder/hulk.js'
       },
       revealing: {
-        templates: 'view/binder/revealing.hogan',
-        output: 'tasks/binder/revealing.js',
-        binderName: 'bootstrap'
+        src: 'view/binder/revealing.hogan',
+        dest: 'tasks/binder/revealing.js'
       },
       amd: {
-        templates: 'view/binder/amd.hogan',
-        output: 'tasks/binder/amd.js',
+        src: 'view/binder/amd.hogan',
+        dest: 'tasks/binder/amd.js'
+      },
+      //task-option default...use bootstrapper
+      options: {
         binderName: 'bootstrap'
       }
     },
-    watch: {
-      files: '<config:lint.files>',
-      tasks: 'default'
-    },
-    jshint: {
-      before: ['Gruntfile.js', 'tasks/hogan.js', 'example/Gruntfile.js'],
-      after: ['tasks/binder/*.js'],
-      options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        node: true,
-        es5: true
-      },
-      globals: {}
+    // Unit tests.
+    nodeunit: {
+      tests: ['test/*_test.js']
     }
   });
 
-  // Load local tasks.
+  // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');
-  
+
+  // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  // Default task.
-  grunt.registerTask('default', 'hogan');
-  
-  grunt.registerTask('ci', ['jshint:before', 'hogan', 'jshint:after']);
+
+  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
+  // plugin's task(s), then test the result.
+  grunt.registerTask('test', ['clean', 'hogan', 'jshint:binders', 'nodeunit']);
+
+  // By default, lint the code and run all tests.
+  grunt.registerTask('default', ['jshint:code', 'test']);
 
 };
