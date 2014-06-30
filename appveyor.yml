@@ -19,12 +19,11 @@ init:
 # Install scripts. (runs after repo cloning)
 install:
   - npm install -g grunt-cli --quiet
-  - npm install grunt-contrib-jshint --save-dev --quiet
   - npm install --quiet
 
 # Build the plugin and then link it for testing examples
 build_script:
-  - grunt ci
+  - grunt
   - npm link
   
 # Post-install test scripts.
@@ -33,8 +32,8 @@ test_script:
   - node --version
   - npm --version
   - ps: "cd ./example"
-  - npm install grunt-contrib-jshint --save-dev --quiet
   - npm link grunt-hogan
+  - npm install --quiet
   - grunt
 
 artifacts:

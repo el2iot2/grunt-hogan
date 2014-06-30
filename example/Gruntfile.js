@@ -131,7 +131,7 @@ module.exports = function(grunt) {
       }
     },
     clean: {
-      tests: ['tmp', 'binders/custombinder2.js']
+      tests: ['tmp']
     },
   });
 
@@ -142,16 +142,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
-
-  grunt.registerTask('custombinders', ['custombinders']);
-
-  //What you would normally use (give or take lint/testing/etc)
-  grunt.registerTask('default', 'hogan');
   
-  
-    
   //But our test task will lint and verify the results
-  grunt.registerTask('test', [
+  grunt.registerTask('default', [
       'jshint:code', 
       'hogan',
       'jshint:results',
