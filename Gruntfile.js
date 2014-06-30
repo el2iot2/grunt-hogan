@@ -17,7 +17,8 @@ module.exports = function(grunt) {
     shell: {
       bootstrap: {
         //To the hulk CLI
-        command: 
+        command:
+          'node '+
           __dirname + 
           '/node_modules/hogan.js/bin/hulk '+
           __dirname +
