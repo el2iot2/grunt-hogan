@@ -1,10 +1,13 @@
 {{!the default binder targets both node and script usages}}
 (function (exports) {
   var Hogan = require('hogan.js');
+  
   var t = {
+    /* jshint ignore:start */
     {{#templates}}
     '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
     {{/templates}}
+    /* jshint ignore:end */
   },
   r = function(n) {
     var tn = t[n];

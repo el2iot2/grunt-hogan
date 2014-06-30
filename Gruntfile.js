@@ -6,47 +6,55 @@ module.exports = function(grunt) {
     jshint: {
       code: [
         'Gruntfile.js', 
-        'tasks/*.js', 
-        'example/Gruntfile.js', 
-        '<%= nodeunit.tests %>'],
-      binders: ['tasks/binder/*.js'],
+        'tasks/hogan.js',
+        'example/Gruntfile.js',
+        'tasks/binders.js'],
       options: {
         jshintrc: '.jshintrc'
       }
     },
-    clean: {
-      tests: ['tmp']
-    },
-    hogan: {
-      //Build binder templates
-      nodejs: {
-        src: 'view/binder/nodejs.hogan',
-        dest: 'tasks/binder/nodejs.js'
-      },
-      'default': {
-        src: 'view/binder/default.hogan',
-        dest: 'tasks/binder/default.js'
-      },
-      hulk: {
-        src: 'view/binder/hulk.hogan',
-        dest: 'tasks/binder/hulk.js'
-      },
-      revealing: {
-        src: 'view/binder/revealing.hogan',
-        dest: 'tasks/binder/revealing.js'
-      },
-      amd: {
-        src: 'view/binder/amd.hogan',
-        dest: 'tasks/binder/amd.js'
-      },
-      //task-option default...use bootstrapper
-      options: {
-        binderName: 'bootstrap'
+    //Make a shell call
+    shell: {
+      bootstrap: {
+        //To the hulk CLI
+        command: 
+          __dirname + 
+          '/node_modules/hogan.js/bin/hulk '+
+          __dirname +
+          '/view/binder/*.hogan',
+        options: {
+          stdout: false,
+          stderr: false,
+          //But catch the output
+          callback: function log(err, stdout, stderr, cb) {
+              //And handle errors (if any)
+              if (err) {
+                grunt.log.errorlns(err);
+              }
+              else if (stderr) {
+                grunt.log.errorlns(stderr);
+              }
+              else {
+                //Otherwise load a lodash template
+                var template = grunt.file.read(
+                  __dirname +
+                  '/view/binders.lodash');
+                
+                //process it with the hulk result
+                var result = grunt.template.process(template, {data: {stdout: stdout}});  
+                
+                //And write out our bootstrap module
+                grunt.file.write(
+                  __dirname +
+                  '/tasks/binders.js',
+                  result
+                );
+                grunt.log.ok('hulk: generated binders.js');
+                cb();
+              }
+          }
+        }
       }
-    },
-    // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js']
     }
   });
 
@@ -55,13 +63,7 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-shell');
 
-
-  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
-  // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'hogan', 'jshint:binders', 'nodeunit']);
-
-  // By default, lint the code and run all tests.
-  grunt.registerTask('default', ['jshint:code', 'test']);
-
+  grunt.registerTask('default', ['shell:bootstrap', 'jshint']);
 };

@@ -1,9 +1,12 @@
 {{!the nodejs binder exports a simple node module}}
 var Hogan = require('hogan.js');
+
 var t = {
+  /* jshint ignore:start */
   {{#templates}}
   '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
   {{/templates}}
+  /* jshint ignore:end */
 },
 r = function(n) {
   var tn = t[n];

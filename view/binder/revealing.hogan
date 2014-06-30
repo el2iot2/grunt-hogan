@@ -1,9 +1,12 @@
-{{The revealing binder uses the revealing module pattern}}
+{{!The revealing binder uses the revealing module pattern}}
 var {{exportName}} = function() {
+  
 var t = {
+  /* jshint ignore:start */
   {{#templates}}
   '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
   {{/templates}}
+  /* jshint ignore:end */
 },
 r = function(n) {
   var tn = t[n];

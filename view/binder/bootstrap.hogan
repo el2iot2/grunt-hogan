@@ -1,17 +1,9 @@
-{{!A "bootstrap" template that is used to generate binder templates}}
+{{!the bootstrap binder builds custom binders}}
 var Hogan = require('hogan.js');
-{{!Should only be a single template}}
+var templates = {};
+/* jshint ignore:start */
 {{#templates}}
-var t = new Hogan.Template({{{template}}});
+templates['{{name}}'] = new Hogan.Template({{{template}}}); 
 {{/templates}}
-
-{{!Expose the render function and, optionally, the template}}
-module.exports = {
-  {{#exposeTemplates}}
-  templates : [t],
-  {{/exposeTemplates}}
-  {{!context, partials, indent}}
-  render : function(c, p, i) {
-    return t.render(c, p, i);
-  }
-};
+/* jshint ignore:end */
+module.exports = templates;

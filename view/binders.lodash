@@ -1,0 +1,8 @@
+//GENERATED. DO NOT MODIFY DIRECTLY!
+//This module exports all builtin "binder" templates
+//It is created by processing binders.lodash with the output of the hulk CLI
+var Hogan = require('hogan.js');
+/* jshint ignore:start */
+<%= stdout %>
+module.exports = templates;
+/* jshint ignore:end */

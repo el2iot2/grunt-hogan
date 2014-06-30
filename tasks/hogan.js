@@ -7,7 +7,7 @@
  */
 
 var _ = require('lodash'),
-  nodepath = require('nodepath'),
+  nodepath = require('path'),
   hogan = require('hogan.js');
 
 module.exports = function(grunt) {
@@ -90,17 +90,23 @@ module.exports = function(grunt) {
       //establish a path to our binder javascript module
       options.binderPath = 
         options.binderPath || 
-        __dirname + '/binder/' + options.binderName + '.js';
+        __dirname + '/binders.js';
       
       //Make sure it is an accessible file
       if (!grunt.file.isFile(options.binderPath)) {
-        return err('Binder template is not accessible', 'binderName');
+        return err('Binder template is not accessible', 'binderPath');
       }
       
       //Require the module...path should follow node.js require() rules
       grunt.verbose.writeln('Requiring binder template...');
       try {
-        options.batchRender = require(options.binderPath).render;
+        var binderModule = require(options.binderPath);
+        if (_.isFunction(binderModule)) {
+          options.batchRender = binderModule;
+        }
+        else if (_.isPlainObject(binderModule)) {
+          options.batchRender = binderModule[options.binderName].render;
+        }
         grunt.verbose.ok();
       }
       catch(error) {
@@ -180,7 +186,7 @@ module.exports = function(grunt) {
               options.batchRender(
                 context, 
                 options.binderName));
-            return null;
+            grunt.log.ok(file.dest);
           }
           catch(error) {
             grunt.log.error(error);
@@ -193,7 +199,6 @@ module.exports = function(grunt) {
       return false;
     }
     
-    grunt.log.ok();
     return true;
   });
 };

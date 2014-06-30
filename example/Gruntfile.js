@@ -143,7 +143,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
-  grunt.registerTask('custombinders', ['custombinders'])
+  grunt.registerTask('custombinders', ['custombinders']);
 
   //What you would normally use (give or take lint/testing/etc)
   grunt.registerTask('default', 'hogan');

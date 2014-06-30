@@ -1,10 +1,13 @@
 {{!Make a collection of named templates available via an AMD}}
 define(['hogan'], function(Hogan) {
+  /* jshint ignore:start */
   var t = {
     {{#templates}}
     '{{name}}' : new Hogan.Template({{{template}}}){{comma}}
     {{/templates}}
+    /* jshint ignore:end */
   },
+  
   r = function(n) {
     var tn = t[n];
     return function(c, p, i) {
