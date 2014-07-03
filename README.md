@@ -122,7 +122,19 @@ To use a *custom* binder, set the "binderPath" attribute to the desired javascri
 ```javascript
 //...
 options: {
-  binderPath : __dirname + '/my/custom/binder.js',
+  binderPath : __dirname + '/my/custom/binders.js',
+  binderName : 'mybinder'
+}
+//...
+```
+
+If `binderName` is unspecified, then the first binder in the module will be used (useful if you only have a single binder in your module): 
+
+
+```javascript
+//...
+options: {
+  binderPath : __dirname + '/my/custom/binders.js'
 }
 //...
 ```
