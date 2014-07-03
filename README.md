@@ -16,7 +16,9 @@ Then add this line to your project's `Gruntfile.js`:
 grunt.loadNpmTasks('grunt-hogan');
 ```
 
-To precompile a single template into a single output file:
+`grunt-hogan` now uses standard [grunt file directives](http://gruntjs.com/configuring-tasks#files) for inputs and outputs.
+
+To precompile a single `src` template into a single `dest` module:
 
 ```javascript
 grunt.initConfig({
@@ -25,9 +27,9 @@ grunt.initConfig({
         //desired target name
         mytarget : {
           //path to input template
-          template : 'view/chair.hogan',
+          src : 'view/chair.hogan',
           //output path, relative to Gruntfile.js
-          output : 'bandanna.js'
+          dest : 'bandanna.js'
         }
     },
     //...
@@ -43,9 +45,9 @@ grunt.initConfig({
         //desired target name
         mytarget : {
           //Wildcard of desired templates
-          templates : 'view/**/*.hogan',
+          src : 'view/**/*.hogan',
           //output destination
-          output : 'hulkingup.js'
+          dest : 'hulkingup.js'
         }
     },
     //...
@@ -58,52 +60,72 @@ grunt.initConfig({
 //...
 mytarget : {
     //...
-    templates : ['view/wwf/*.hogan', 'view/wcw/*.hogan'],
+    src : ['view/wwf/*.hogan', 'view/wcw/*.hogan'],
     //...
 }
 //...
 ```
 
+##Options
+
+`grunt-hogan` has been updated to support grunt's
+[task- and target-specific options](http://gruntjs.com/configuring-tasks#options).
+In this way you can DRY out your template tasks.
+
 ##"Binders"
 
-By default, the all compiled templates in a single grunt target will be "bound" together by the default "binder" (which
-is itself a pre-compiled template). The "default" binder generates javascript
+A single target can compile multiple hogan templates into a single file. The active "binder" is
+responsible for deciding how to join things together and what conventions/formats to use.
+
+In general, most binders will result in a file containing a Javascript module, but this is customizable.
+
+If a binder is not explicitly specified, the "default" binder will be used. 
+The "default" binder generates a javascript file
 that is designed to work both as a node.js module and in the browser via a 
 `<script/>` tag. Other built-in binders are:
 
-  * "hulk" - should output similarly to hogan's "hulk" command line tool...which is "vanilla" javascript
+  * "hulk" - outputs results similar to hogan's "hulk" command line tool...which is "vanilla" javascript
   * "nodejs" - exposes compiled templates as a node.js module
   * "amd" - exposes compiled templates in amd format
   * "revealing" - exposes compile templates via the revealing module pattern 
 
-You can also create your own binder templates to support other usages. See "Custom Binders" section below.
+You can also create your own binders. See the "Custom Binders" section below. If you think a binder is
+particularly useful and want it to become "built-in", feel free to send a pull request.
 
-To specify a binder, use a "binderName" directive:
+To specify a binder, use the "binderName" option:
 
 ```javascript
 //...
 mytarget : {
-    templates : 'view/**/*.hogan',
-    output : 'hulkingup.js',
-    binderName : 'hulk'
+    src : 'view/**/*.hogan',
+    dest : 'hulkingup.js',
+    options : { binderName: 'hulk' }
 }
 //...
 ```
 ###Custom Binders
 
-To specify a *custom* binder, supply a path for the "binder" attribute (note that this differs from the "binderName" in examples above) that resolves to a binder module:
+Custom binders start life as a binder template that is compiled with the "bootstrap" binder into a node.js style javascript module.
+`grunt-hogan` simply expects to be able to `require(...)` the module and access
+a `templates` attribute that is an associative array from `[binderName]` to `Hogan.Template` instance.
+
+##Creating Custom Binders
+
+See the `custombinder` and `twocustombinders` targets in the 
+[example custombinder gruntfile](example/Gruntfile.custombinder.js) 
+for futher detail on creating and using custom binders.
+
+
+##Using Custom Binders
+To use a *custom* binder, set the "binderPath" attribute to the desired javascript file:
 
 ```javascript
 //...
-binder : __dirname + '/my/custom/binder.js'
+options: {
+  binderPath : __dirname + '/my/custom/binder.js',
+}
 //...
 ```
-See the `custombinder_bootstrap` and `multi_custombinder` targets in the 
-[example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js) 
-for futher detail on creating and using custom binders.
-
-[grunt]: http://gruntjs.com/
-[getting_started]: https://github.com/gruntjs/grunt/wiki/Getting-started
 
 ###Using precompiled templates
 
@@ -113,9 +135,9 @@ Given a precompile task like:
 
 ```javascript
 mytarget : {
-  templates : ['view/fist.html', 'view/foe.html', 'view/what.you.gonna.do.html'],
-  output : 'templates.js',
-  binderName : 'nodejs'
+  src : ['view/fist.html', 'view/foe.html', 'view/what.you.gonna.do.html'],
+  dest : 'templates.js',
+  options : { binderName : 'nodejs' }
 }
 ```
 A node.js application could:
@@ -146,28 +168,30 @@ Other templates will vary slightly in their syntax to support their purpose.
 The default behavior of `grunt-hogan` is to use the input templates file name (without the extension) as the name of the template in the output, precompiled result.
 
 Thus an input of `view/yada.hogan` will be available as `templates.yada(...)`. However, there are plenty of scenarios where
-one may want to customize this behavior. This is accomplished via the `nameFunc` directive on a task:
+one may want to customize this behavior. This is accomplished via the `nameFunc` option on a task:
 
 ```javascript
 mytarget : {
-    templates : './view/multi*.html',
-    output : './temp/namefunc.js',
-    binderName: 'hulk',
-    
-    //Specify a custom name function
-    nameFunc: function(fileName) {
+    src : './view/multi*.html',
+    dest : './temp/namefunc.js',
+    options : {
+      binderName: 'hulk',
       
-      //Grab the path package here locally for clarity
-      var _path = require('path');
-      
-      //'yada/yada/multi.1.js' -> 'multi.1'
-      var name = _path
-        .basename(
-          fileName, 
-          _path.extname(fileName));
-          
-      //'multi.1' -> 'name_1'
-      return 'name_'+name[6];
+      //Specify a custom name function
+      nameFunc: function(fileName) {
+        
+        //Grab the path package here locally for clarity
+        var _path = require('path');
+        
+        //'yada/yada/multi.1.js' -> 'multi.1'
+        var name = _path
+          .basename(
+            fileName, 
+            _path.extname(fileName));
+            
+        //'multi.1' -> 'name_1'
+        return 'name_'+name[6];
+      }
     }
 }
 ```
@@ -182,7 +206,7 @@ And another template (defined in `mypartial.hogan`):
 ```
 <em>{{text}}</em>
 ```
-Assuming you use a `grunt-hogan` task to compile both these templates into a single module, you end up with a template render object something like:
+Assuming you use a `grunt-hogan` target to compile both these templates into a single module, you end up with a template render object something like:
 ```javascript
 {
     message: func(...){...},
@@ -233,13 +257,13 @@ Doing so makes the actual templates available as a `template` property on the mo
 ```
 Using this, you can pass the actual `Hogan.Template` instance to wherever it is needed (with the "Explicit Partial Templates" mentioned above, for example).
 ## Examples
- * See [an example gruntfile](https://github.com/automatonic/grunt-hogan/blob/master/example/Gruntfile.js)
+ * See [an example gruntfile](example/Gruntfile.js)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
- * 0.2.- - [in progress](https://github.com/automatonic/grunt-hogan/issues?milestone=2&state=open)
+ * 0.3.- - [in progress](https://github.com/automatonic/grunt-hogan/issues?milestone=3&state=open)
  * 0.2.2 - Binder template overhaul
    * Added partial support on render functions
    * Sibling partials by default
@@ -255,5 +279,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
  * a comment by "baz" [here](http://soenkerohde.com/2012/02/node-js-server-side-compile-hogan-js-templates/) pointed me in the right direction
 
 ## License
-Copyright (c) 2013 Elliott B. Edwards  
+Copyright (c) 2014 Elliott B. Edwards  
 Licensed under the MIT license.
+
+[grunt]: http://gruntjs.com/
+[getting_started]: https://github.com/gruntjs/grunt/wiki/Getting-started
