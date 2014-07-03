@@ -33,7 +33,7 @@
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-nodeunit": "^0.4.1",
-    "grunt-hogan": "~0.2.2"
+    "grunt-hogan": "^0"
   },
   "keywords": []
 }

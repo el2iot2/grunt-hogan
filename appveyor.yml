@@ -35,7 +35,6 @@ test_script:
   - npm link grunt-hogan
   - npm install --quiet
   - grunt
-
-artifacts:
-  # the example results
-  - path: example\temp\*.js
+  - grunt --gruntfile Gruntfile.custombinder.js
+  - grunt --gruntfile Gruntfile.test.js
+  
