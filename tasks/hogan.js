@@ -57,15 +57,15 @@ module.exports = function(grunt) {
         grunt.log.warn('DEPRECATED: "batchRender" is no longer supported');
       }
       
-      var pushFile = function(src) {
+      var pushFiles = function(srcFiles) {
         if (_.has(data, 'output')) {
           grunt.log.warn('DEPRECATED: "output" should be "dest".');
           grunt.log.warn('See: http://gruntjs.com/configuring-tasks#files');
           //transform to grunt files style
-          files.push({src: src, dest: data.output});
+          files.push({src: grunt.file.expand(srcFiles), dest: data.output});
         }
         else if (_.has(data, 'dest')) {
-          files.push({src: src, dest: data.dest});
+          files.push({src: grunt.file.expand(srcFiles), dest: data.dest});
         }
         else {
           throw new Error('No "dest" or "output" (deprecated) found.');
@@ -74,11 +74,11 @@ module.exports = function(grunt) {
       
       if (_.has(data, 'template')) {
         grunt.log.warn('DEPRECATED: "template" should be set as "src". See: http://gruntjs.com/configuring-tasks#files');
-        pushFile(data.template);
+        pushFiles([data.template]);
       }
       else if (_.has(data, 'templates')) {
         grunt.log.warn('DEPRECATED: "templates" should be set as "src". See: http://gruntjs.com/configuring-tasks#files');
-        pushFile(data.templates);
+        pushFiles(data.templates);
       }
     }
     
