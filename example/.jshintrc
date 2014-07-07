@@ -10,5 +10,5 @@
   "boss": true,
   "eqnull": true,
   "node": true,
-  "predef" : ["define", "Hogan"]
+  "predef" : [ "define" ]
 }

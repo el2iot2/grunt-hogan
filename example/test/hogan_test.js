@@ -2,47 +2,29 @@
 
 var grunt = require('grunt');
 
-/*
-  ======== A Handy Little Nodeunit Reference ========
-  https://github.com/caolan/nodeunit
+var expectOutput = function(test, target) {
+  test.expect(1);
 
-  Test methods:
-    test.expect(numAssertions)
-    test.done()
-  Test assertions:
-    test.ok(value, [message])
-    test.equal(actual, expected, [message])
-    test.notEqual(actual, expected, [message])
-    test.deepEqual(actual, expected, [message])
-    test.notDeepEqual(actual, expected, [message])
-    test.strictEqual(actual, expected, [message])
-    test.notStrictEqual(actual, expected, [message])
-    test.throws(block, [error], [message])
-    test.doesNotThrow(block, [error], [message])
-    test.ifError(value)
-*/
+  var actual = grunt.file.read('tmp/' + target + '.js');
+  var expected = grunt.file.read('test/expected/' + target + '.js');
+  test.equal(actual, expected, 'should have had an expected output for '+target);
+  test.done();
+};
 
 exports.hogan = {
   setUp: function(done) {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
-    test.expect(1);
-
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
-
-    test.done();
-  },
-  custom_options: function(test) {
-    test.expect(1);
-
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
-
-    test.done();
-  },
+  custombinder: function(test) { expectOutput(test, 'custombinder'); },
+  glob: function(test) { expectOutput(test, 'glob'); },
+  multi: function(test) { expectOutput(test, 'multi'); },
+  namefunc: function(test) { expectOutput(test, 'namefunc'); },
+  simple: function(test) { expectOutput(test, 'simple'); },
+  twocustombinders: function(test) { expectOutput(test, 'twocustombinders'); },
+  use_amd: function(test) { expectOutput(test, 'use_amd'); },
+  use_custombinder: function(test) { expectOutput(test, 'use_custombinder'); },
+  use_revealing: function(test) { expectOutput(test, 'use_revealing'); },
+  use_twocustombinders: function(test) { expectOutput(test, 'use_twocustombinders'); }
 };
+

@@ -1,6 +1,6 @@
 # grunt-hogan
 
-a [grunt](http://gruntjs.com) task to precompile [hogan](http://hoganjs.com) templates 
+a [grunt](http://gruntjs.com) task to precompile [mustache](http://mustache.github.io/) templates with [hogan.js](http://twitter.github.io/hogan.js/) 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/7sl7shna3qi0uo74)](https://ci.appveyor.com/project/automatonic/grunt-hogan)
 

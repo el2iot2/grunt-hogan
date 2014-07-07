@@ -1,4 +1,5 @@
 {{!The revealing binder uses the revealing module pattern}}
+/* global Hogan */
 var {{exportName}} = (function() {
   
 var t = {
