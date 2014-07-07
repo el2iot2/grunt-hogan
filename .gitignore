@@ -14,4 +14,4 @@ example/temp
 node_modules
 npm-debug.log
 .c9revisions
-tasks/binder/customBinderPath.js
+tmp

@@ -10,17 +10,20 @@ var _ = require('lodash'),
   nodepath = require('path'),
   hogan = require('hogan.js');
 
+var defaultNameFunc = function(fileName) {
+    return nodepath.basename(fileName, nodepath.extname(fileName));
+}; 
+
 module.exports = function(grunt) {
 
   //Register with grunt and massage options
   grunt.registerMultiTask('hogan', 'Compile a hogan template.', function() {
     var data = this.data,
       files = this.files,
-      defaultNameFunc = function(fileName) {
-          return nodepath.basename(fileName, nodepath.extname(fileName));
-      }, 
+      
       defaults = {
         binderName: 'default',
+        binderPath: __dirname +'/binders.js',
         exportName: this.target,
         nameFunc: defaultNameFunc,
         suppressLastTemplateComma: true
@@ -41,7 +44,6 @@ module.exports = function(grunt) {
       };
       
       migrate('binderName');
-      migrate('batchRender');
       migrate('exportName');
       migrate('nameFunc');
       migrate('exposeTemplates');
@@ -49,6 +51,10 @@ module.exports = function(grunt) {
       if (_.has(data, 'binder')) {
         grunt.log.warn('DEPRECATED: "binder" should be "binderPath" for clarity');
         options.binderPath = data.binder;
+      }
+      
+      if (_.has(data, 'batchRender')) {
+        grunt.log.warn('DEPRECATED: "batchRender" is no longer supported');
       }
       
       var pushFile = function(src) {
@@ -76,8 +82,7 @@ module.exports = function(grunt) {
       }
     }
     
-    var err = function(message, hintKey) {
-      grunt.log.oklns('options.'+hintKey+' = '+options[hintKey]);
+    var err = function(message) {
       grunt.log.errorlns(message);
       return false;
     };
@@ -85,38 +90,43 @@ module.exports = function(grunt) {
     //Begin task
     grunt.log.writeln('Compiling template...');
     
-    //Load the render function if it isn't specified
-    if (!_.isFunction(options.batchRender)) {
-      //establish a path to our binder javascript module
-      options.binderPath = 
-        options.binderPath || 
-        __dirname + '/binders.js';
-      
-      //Make sure it is an accessible file
-      if (!grunt.file.isFile(options.binderPath)) {
-        return err('Binder template is not accessible', 'binderPath');
-      }
-      
-      //Require the module...path should follow node.js require() rules
-      grunt.verbose.writeln('Requiring binder template...');
-      try {
-        var binderModule = require(options.binderPath);
-        if (_.isFunction(binderModule)) {
-          options.batchRender = binderModule;
+    //Make sure it is an accessible file
+    if (!grunt.file.isFile(options.binderPath)) {
+      return err('Binder template is not accessible');
+    }
+  
+    //Require the module...path should follow node.js require() rules
+    grunt.verbose.writeln('Requiring binder template...');
+    try {
+      var binderModule = require(options.binderPath);
+      if (_.isPlainObject(binderModule)) {
+        //Try the specified name
+        if (_.has(binderModule,options.binderName)) {
+          options.binderTemplate = binderModule[options.binderName];
+          grunt.verbose.ok('Found templates["'+options.binderName+'"]');
         }
-        else if (_.isPlainObject(binderModule)) {
-          options.batchRender = binderModule[options.binderName].render;
+        else {
+          if (!_.empty(binderModule)) {
+            var firstKey = _.firstKey(binderModule);
+            options.binderTemplate = binderModule[firstKey];
+            grunt.verbose.ok('Defaulted to templates["'+firstKey+'"]');
+          }
+          else {
+            return err('Binder export must have one or more templates exported');
+          }
         }
-        grunt.verbose.ok();
       }
-      catch(error) {
-        grunt.log.errorlns(error);
-        return err('Could not require binder template', 'binderPath');
+      else {
+        return err('Binder export must be either a function or a plain object');
       }
-      
-      if (!_.isFunction(options.batchRender)) {
-        return err('Binder template must export a "render" func', 'binderPath');
-      }
+    }
+    catch(error) {
+      grunt.log.errorlns(error);
+      return err('Could not require binder template');
+    }
+    
+    if (!_.isFunction(options.binderTemplate.render)) {
+      return err('Binder template should have had a "render" func');
     }
 
     files
@@ -125,15 +135,17 @@ module.exports = function(grunt) {
           .src
           .map(
             function(filepath) {
+              var name;
+              
               if (!grunt.file.exists(filepath)) {
-                grunt.log.error('Template "' + filepath + '" not found.');
+                grunt.log.errorlns('Template "' + filepath + '" not found.');
                 return null;
               }
               
-              var name, template;
-              
               try {
-                name = options.nameFunc(filepath);    
+                grunt.verbose.writeln('Generating name...');
+                name = defaultNameFunc(filepath);
+                grunt.verbose.ok(name);
               }
               catch (error) {
                 grunt.log.warn('Could not select template name from path.');
@@ -141,22 +153,18 @@ module.exports = function(grunt) {
               }
               
               try {
-                template = hogan.compile(
-                  grunt.file.read(filepath), 
-                  {
-                    asString: true
-                  });      
+                return {
+                  name: name,
+                  comma: ',',
+                  template: hogan.compile(grunt.file.read(filepath), 
+                  { asString: 1 })
+                }; 
               }
               catch (error) {
                 grunt.log.error(error);
                 grunt.log.error('Could not compile template ' + filepath);
                 return null;
               }
-              return {
-                name: name,
-                comma: ',',
-                template: template
-              }; 
             }
           );
           
@@ -183,9 +191,8 @@ module.exports = function(grunt) {
           {
             grunt.file.write(
               file.dest, 
-              options.batchRender(
-                context, 
-                options.binderName));
+              options.binderTemplate.render(
+                context));
             grunt.log.ok(file.dest);
           }
           catch(error) {
