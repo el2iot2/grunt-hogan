@@ -109,20 +109,32 @@ Custom binders start life as a binder template that is compiled with the "bootst
 `grunt-hogan` simply expects to be able to `require(...)` the module and access
 a `templates` attribute that is an associative array from `[binderName]` to `Hogan.Template` instance.
 
-##Creating Custom Binders
+####Creating Custom Binders
 
 See the `custombinder` and `twocustombinders` targets in the 
 [example custombinder gruntfile](example/Gruntfile.custombinder.js) 
 for futher detail on creating and using custom binders.
 
 
-##Using Custom Binders
+####Using Custom Binders
 To use a *custom* binder, set the "binderPath" attribute to the desired javascript file:
 
 ```javascript
 //...
 options: {
-  binderPath : __dirname + '/my/custom/binder.js',
+  binderPath : __dirname + '/my/custom/binders.js',
+  binderName : 'mybinder'
+}
+//...
+```
+
+If `binderName` is unspecified, then the first binder in the module will be used (useful if you only have a single binder in your module): 
+
+
+```javascript
+//...
+options: {
+  binderPath : __dirname + '/my/custom/binders.js'
 }
 //...
 ```
