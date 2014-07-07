@@ -46,6 +46,7 @@
     "gruntplugin",
     "hogan.js",
     "template",
+    "mustache",
     "templating"
   ]
 }

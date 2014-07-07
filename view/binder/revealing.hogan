@@ -1,5 +1,5 @@
 {{!The revealing binder uses the revealing module pattern}}
-var {{exportName}} = function() {
+var {{exportName}} = (function() {
   
 var t = {
   /* jshint ignore:start */
@@ -22,4 +22,4 @@ return {
   '{{name}}' : r('{{name}}'){{comma}}
   {{/templates}}
 };
-}();
+})();

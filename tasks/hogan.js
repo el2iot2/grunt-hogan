@@ -106,8 +106,8 @@ module.exports = function(grunt) {
           grunt.verbose.ok('Found templates["'+options.binderName+'"]');
         }
         else {
-          if (!_.empty(binderModule)) {
-            var firstKey = _.firstKey(binderModule);
+          if (!_.isEmpty(binderModule)) {
+            var firstKey = _.findKey(binderModule);
             options.binderTemplate = binderModule[firstKey];
             grunt.verbose.ok('Defaulted to templates["'+firstKey+'"]');
           }
