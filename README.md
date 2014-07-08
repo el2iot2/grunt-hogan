@@ -72,6 +72,9 @@ mytarget : {
 [task- and target-specific options](http://gruntjs.com/configuring-tasks#options).
 In this way you can DRY out your template tasks.
 
+Some previous "directives" have been deprecated in favor of the new option style.
+The old versions should still work (but will warn and explain what to change).
+
 ##"Binders"
 
 A single target can compile multiple hogan templates into a single file. The active "binder" is
@@ -275,7 +278,11 @@ Using this, you can pass the actual `Hogan.Template` instance to wherever it is 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
- * 0.3.- - [in progress](https://github.com/automatonic/grunt-hogan/issues?milestone=3&state=open)
+ * 0.3.0 - Improved grunt support
+   * Switched to lodash
+   * Upgraded hogan.js version
+   * Added CI build and testings
+   * Improved examples, and CI makes sure they work
  * 0.2.2 - Binder template overhaul
    * Added partial support on render functions
    * Sibling partials by default
