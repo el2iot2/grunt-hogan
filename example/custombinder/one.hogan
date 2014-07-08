@@ -5,12 +5,14 @@
   as hogan compiles to a single line of javascript
   so comment your binder carefully
 }}
-
 /*an amd binder that returns you the templates*/
 define(['hogan'], function (Hogan) {
+  var name='one';
   var templates = {};
+  /* jshint ignore:start */
   {{#templates}}
   templates["{{name}}"] = new Hogan.Template({{{template}}});
-  {{/templates}}        
+  {{/templates}}
+  /* jshint ignore:end */
   return templates;
 });

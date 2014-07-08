@@ -29,7 +29,6 @@ module.exports = function(grunt) {
         suppressLastTemplateComma: true
       },
       options = this.options(defaults); 
-      
     //Support deprecated options for now
     {
       var migrate = function(key) {
@@ -128,6 +127,10 @@ module.exports = function(grunt) {
     if (!_.isFunction(options.binderTemplate.render)) {
       return err('Binder template should have had a "render" func');
     }
+    
+    if (!_.isFunction(options.nameFunc)) {
+      return err('options include an invalid "nameFunc"');
+    }
 
     files
       .forEach(function(file) {
@@ -143,9 +146,8 @@ module.exports = function(grunt) {
               }
               
               try {
-                grunt.verbose.writeln('Generating name...');
-                name = defaultNameFunc(filepath);
-                grunt.verbose.ok(name);
+                name = options.nameFunc(filepath);
+                grunt.verbose.writeln(filepath + ' -> ' + name);
               }
               catch (error) {
                 grunt.log.warn('Could not select template name from path.');

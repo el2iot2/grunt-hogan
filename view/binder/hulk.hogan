@@ -1,5 +1,6 @@
 {{!the hulk binder tries to emulate the output of the hulk cli in hogan.js}}
 var templates = {};
+/* global Hogan */
 /* jshint ignore:start */
 {{#templates}}
 templates['{{name}}'] = new Hogan.Template({{{template}}});

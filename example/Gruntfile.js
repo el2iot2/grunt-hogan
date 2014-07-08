@@ -62,18 +62,17 @@ module.exports = function(grunt) {
           binderName: 'hulk',
           //Specify a custom name function
           nameFunc: function(fileName) {
-            
             //Grab the path package here locally for clarity
             var _path = require('path');
             
-            //'yada/yada/multi.1.js' -> 'multi.1'
+            //'yada/yada/multi1.html' -> 'multi1'
             var name = _path
               .basename(
                 fileName, 
                 _path.extname(fileName));
                 
-            //'multi.1' -> 'name_1'
-            return 'name_'+name[6];
+            //'multi1' -> 'name_1'
+            return 'name_'+name[5];
           }
         }
       }
