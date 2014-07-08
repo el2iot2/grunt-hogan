@@ -37,4 +37,3 @@ test_script:
   - grunt
   - grunt --gruntfile Gruntfile.custombinder.js
   - grunt --gruntfile Gruntfile.test.js
-  
