@@ -278,6 +278,7 @@ Using this, you can pass the actual `Hogan.Template` instance to wherever it is 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
+ * 0.3.1 - Updated the way grunt is specified in the `peerDependencies`
  * 0.3.0 - Improved grunt support
    * Switched to lodash
    * Upgraded hogan.js version
